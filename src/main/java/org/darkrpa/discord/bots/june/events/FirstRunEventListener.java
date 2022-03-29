@@ -1,5 +1,7 @@
 package org.darkrpa.discord.bots.june.events;
 
+import org.darkrpa.discord.bots.june.model.Servidor;
+
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.GenericEvent;
@@ -18,7 +20,8 @@ public class FirstRunEventListener extends AbstractEventListener{
             //tenemos el server
             GuildJoinEvent evento = (GuildJoinEvent) event;
             Guild server = evento.getGuild();
-
+            //Tenemos el servidor, como es la primera vez que se ejecuta no tendra canal de bienvenida
+            Servidor servidor = new Servidor(server.getId(), server.getMemberCount());
 
         }
     }
