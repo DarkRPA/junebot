@@ -1,11 +1,14 @@
 package org.darkrpa.discord.bots.june.model;
 
-public class Servidor {
+import org.darkrpa.discord.bots.june.controllers.MySQLController;
+
+public class Servidor extends ObjetoGuardable{
     private String idServidor;
     private int cantUsuarios;
     private String idCanalBienvenida;
 
-    public Servidor(String idServidor, int cantUsuarios) {
+    public Servidor(MySQLController controller, String idServidor, int cantUsuarios) {
+        super(controller);
         this.idServidor = idServidor;
         this.cantUsuarios = cantUsuarios;
     }
@@ -32,6 +35,24 @@ public class Servidor {
 
     public void setIdCanalBienvenida(String idCanalBienvenida) {
         this.idCanalBienvenida = idCanalBienvenida;
+    }
+
+    @Override
+    public boolean eliminar() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean actualizar() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void get(Object id) {
+        // TODO Auto-generated method stub
+
     }
 
 
