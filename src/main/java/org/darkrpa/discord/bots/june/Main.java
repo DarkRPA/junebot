@@ -34,13 +34,21 @@ public final class Main {
 
     private JDA bot;
 
-    private Main() throws LoginException, IllegalArgumentException {
+    private Main() throws LoginException, IllegalArgumentException, InterruptedException {
         JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor());
         this.bot = consBuilder.build();
+        //Esperamos a que el bot cargue correctamente
+        this.bot.awaitReady();
+
     }
 
-    public static void main(String[] args) throws LoginException, IllegalArgumentException {
+    public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException {
         Main main = new Main();
+    }
+
+    public JDA getBot(){
+        //Nos puede interesar compartir el bot
+        return this.bot;
     }
 
     //Debemos de hacer un metodo que se encargue de leer el archivo .env en el que tenemos
