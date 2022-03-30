@@ -5,6 +5,7 @@ import org.darkrpa.discord.bots.june.controllers.MySQLController;
 
 public abstract class ObjetoGuardable {
     protected MySQLController controller;
+    protected boolean guardado;
 
     public ObjetoGuardable(){
         this.controller = Main.getMySQLController();

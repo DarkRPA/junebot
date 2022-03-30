@@ -3,9 +3,11 @@ package org.darkrpa.discord.bots.june.controllers;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
@@ -38,6 +40,50 @@ public class MySQLController {
         this.conexion = DriverManager.getConnection("jdbc:mysql:/"+host+":"+port+"/"+db, user, password);
     }
 
+
+    public ArrayList<HashMap<String, Object>> get(String sentencia){
+        //Dada una sentencia nosotros lo que haremos será obtener e interpretar el resultado en una estructura de
+        //ArrayList<ArrayList<HashMap<String, Object>>>, luego quien haya llamado al metodo se encargara
+        //de interpretar esos datos, este metodo sirve tanto para cualquier consulta, da igual cual sea
+        //solo necesita la sentencia SQL a ejecutar
+
+        ArrayList<HashMap<String, Object>> resultado = new ArrayList<>();
+
+        try (Statement estado = this.conexion.createStatement()) {
+            ResultSet datosObtenidos = estado.executeQuery(sentencia);
+            while(datosObtenidos.next()){
+                ResultSetMetaData metadata = datosObtenidos.getMetaData();
+                int cantColumnas = metadata.getColumnCount();
+                //MySQL no empieza por el index 0 sino que empieza por 1
+                HashMap<String, Object> dato = new HashMap<>();
+                for(int i = 1; i <= cantColumnas; i++){
+                    String nombreColumna = metadata.getColumnName(i);
+                    Object valor = datosObtenidos.getObject(i);
+                    dato.put(nombreColumna, valor);
+                }
+                resultado.add(dato);
+            }
+            estado.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return resultado;
+    }
+
+    //Este metodo de lo que se va a encargar será de ejecutar cualquier sentencia que no sea una consulta
+    //y devolvera la cantidad de filas afectadas
+    public int execute(String sentencia){
+        try {
+            Statement estado = this.conexion.createStatement();
+            return estado.executeUpdate(sentencia);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+
+    }
+
     //Siempre que vayamos a hacer alguna operacion crearemos un nuevo statement, asi nos quitamos de complicaciones
     //De que se pueda cerrar el unico que esta abierto
 
@@ -68,7 +114,8 @@ public class MySQLController {
             Statement estado = this.conexion.createStatement();
             ResultSet resultadoConsulta = estado.executeQuery(sentencia);
             resultadoConsulta.next();
-            int cantidad = resultadoConsulta.getInt(0);
+            int cantidad = resultadoConsulta.getInt(1);
+            estado.close();
             if(cantidad >= 1){
                 return false;
             }else{
