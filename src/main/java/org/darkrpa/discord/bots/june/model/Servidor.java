@@ -8,12 +8,12 @@ import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
 public class Servidor extends ObjetoGuardable{
     private String idServidor;
     private int cantUsuarios;
-    private String idCanalBienvenida;
+    private String idCanalBienvenida = "";
 
     public Servidor(String idServidor){
         //Con este constructor lo que vamos a tener en cuenta es que quiere obtener la instancia directamente
         // de la base de datos por lo que vamos a cargar los datos desde ahi
-
+        this.get(idServidor);
     }
 
     public Servidor(String idServidor, int cantUsuarios) {
@@ -62,18 +62,33 @@ public class Servidor extends ObjetoGuardable{
 
     @Override
     public boolean actualizar() {
-        return false;
+        String sentencia = "";
+        if(!super.guardado){
+            sentencia = String.format("INSERT INTO servidor VALUES ('%s', '%d', '%s');", this.idServidor, this.cantUsuarios, this.idCanalBienvenida);
+        }else{
+            sentencia = String.format("UPDATE servidor SET 'idServidor' = '%s', 'cantUsuarios' = '%d', 'idCanalBienvenida' = '%s' WHERE 'idServidor' = '%s'", this.idServidor, this.cantUsuarios, this.idCanalBienvenida, this.idServidor);
+        }
+
+        int resultado = this.controller.execute(sentencia);
+        if(resultado >= 1){
+            super.guardado = true;
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
     public void get(Object id) {
         //Reemplaza las propiedades de este objeto con las propiedades del objeto que hay en la base de datos
         ArrayList<String> columnas = new ArrayList<>();
+        columnas.add("idServidor");
         ArrayList<Object> keys = new ArrayList<>();
+        keys.add(id);
         try {
-            if(super.controller.exist("Servidor", columnas, keys)){
+            if(super.controller.exist("servidor", columnas, keys)){
                 //Existe por lo que debemos de conseguir los datos
-                String sentencia = "SELECT * FROM 'servidor' WHERE 'idServidor' = '"+(String)id+"'";
+                String sentencia = "SELECT * FROM servidor WHERE 'idServidor' = '"+(String)id+"'";
                 ArrayList<HashMap<String, Object>> obtenido = this.controller.get(sentencia);
                 //Debemos acceder a la primera fila pues es la unica que va a ver, o deberia haber
                 HashMap<String, Object> fila = obtenido.get(0);

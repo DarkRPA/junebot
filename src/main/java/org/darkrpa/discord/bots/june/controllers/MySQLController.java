@@ -37,7 +37,7 @@ public class MySQLController {
         String password = Main.getOption(EnvOption.DATABASE_PASSWORD).getValor();
         String db = Main.getOption(EnvOption.DATABASE_MAIN_DATABASE).getValor();
 
-        this.conexion = DriverManager.getConnection("jdbc:mysql:/"+host+":"+port+"/"+db, user, password);
+        this.conexion = DriverManager.getConnection("jdbc:mysql://"+host+":"+port+"/"+db, user, password);
     }
 
 
@@ -91,7 +91,7 @@ public class MySQLController {
         //Este metodo se encargara de comprobar si existe un elemento en X tabla con Y id
         try {
             //Primero debemos de generar la sentencia SQL teniendo en cuenta la cantidad de claves primarias que hay
-            String sentencia = "SELECT COUNT(*) FROM '"+tabla+"' WHERE ";
+            String sentencia = "SELECT COUNT(*) FROM "+tabla+" WHERE ";
             if(primaryKeys.size() != ids.size()){
                 throw new UnpairedArraysException("La cantidad de claves primarias no es la misma que ids o viceversa");
             }
@@ -116,7 +116,7 @@ public class MySQLController {
             resultadoConsulta.next();
             int cantidad = resultadoConsulta.getInt(1);
             estado.close();
-            if(cantidad >= 1){
+            if(cantidad <= 0){
                 return false;
             }else{
                 return true;

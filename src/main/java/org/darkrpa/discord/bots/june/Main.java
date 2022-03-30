@@ -102,4 +102,10 @@ public final class Main {
     public static MySQLController getMySQLController(){
         return Main.controlador;
     }
+
+    //DEBUG
+    //ESTO DEBE DE ESTAR ACCESIBLE
+    public static void setMySQLController(MySQLController controller){
+        Main.controlador = controller;
+    }
 }
