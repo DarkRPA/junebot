@@ -4,11 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import javax.security.auth.login.LoginException;
 
+import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
 import org.darkrpa.discord.bots.june.model.EnvOption;
 
@@ -20,7 +22,7 @@ import net.dv8tion.jda.api.JDABuilder;
  */
 public final class Main {
     private static ArrayList<EnvOption> listaOpciones;
-
+    private static MySQLController controlador;
     //Ahora que ya tenemos cargada la lista de opciones y el funcionamiento basico para recoger opciones especificas
     //tenemos que comenzar a crear el funcionamiento basico del bot
 
@@ -34,15 +36,18 @@ public final class Main {
 
     private JDA bot;
 
-    private Main() throws LoginException, IllegalArgumentException, InterruptedException {
+    private Main() throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
         JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor());
         this.bot = consBuilder.build();
         //Esperamos a que el bot cargue correctamente
         this.bot.awaitReady();
+        //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
+        //uso de el sin necesidad de tener una instancia de la clase
+        Main.controlador = new MySQLController();
 
     }
 
-    public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException {
+    public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
         Main main = new Main();
     }
 
@@ -92,5 +97,9 @@ public final class Main {
 
         //No se ha encontrado
         return null;
+    }
+
+    public static MySQLController getMySQLController(){
+        return Main.controlador;
     }
 }

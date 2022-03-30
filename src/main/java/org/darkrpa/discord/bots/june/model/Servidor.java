@@ -7,8 +7,12 @@ public class Servidor extends ObjetoGuardable{
     private int cantUsuarios;
     private String idCanalBienvenida;
 
-    public Servidor(MySQLController controller, String idServidor, int cantUsuarios) {
-        super(controller);
+    public Servidor(String idServidor){
+        //Con este constructor lo que vamos a tener en cuenta es que quiere obtener la instancia directamente
+        // de la base de datos por lo que vamos a cargar los datos desde ahi
+    }
+
+    public Servidor(String idServidor, int cantUsuarios) {
         this.idServidor = idServidor;
         this.cantUsuarios = cantUsuarios;
     }

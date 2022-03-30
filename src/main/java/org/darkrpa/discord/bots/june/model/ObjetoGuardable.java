@@ -1,12 +1,13 @@
 package org.darkrpa.discord.bots.june.model;
 
+import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
 
 public abstract class ObjetoGuardable {
-    private MySQLController controller;
+    protected MySQLController controller;
 
-    public ObjetoGuardable(MySQLController controller){
-        this.controller = controller;
+    public ObjetoGuardable(){
+        this.controller = Main.getMySQLController();
     }
 
     /**
