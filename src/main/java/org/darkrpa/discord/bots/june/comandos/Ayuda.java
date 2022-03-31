@@ -61,11 +61,16 @@ public class Ayuda implements Comando{
 
             canal.sendMessageEmbeds(embed).addFile(logo).queue((mensaje)->{
                 //Tenemos el mensaje, ahora le añadimos el buscador
+                //Debemos de cargar en el menu todas las opciones de las categorias
                 Message mensajeReal = mensaje;
-                Builder selectMenuBuilder = SelectMenu.create("menuAyuda");
-                selectMenuBuilder.addOption("test", "test2");
-                ActionRow row = ActionRow.of(selectMenuBuilder.build());
-                mensajeReal.editMessageComponents(row).queue();
+                ActionRow layout = null;
+                Builder selectMenuBuilder = SelectMenu.create("menu_ayuda");
+                for(HelpCategory categoria : Ayuda.categories){
+                    selectMenuBuilder.addOption(categoria.getNombreCategoria(), categoria.getIdCategoria());
+                }
+                SelectMenu menuListo = selectMenuBuilder.build();
+                layout = ActionRow.of(menuListo);
+                mensajeReal.editMessageComponents(layout).queue();
             });
 
         }else{

@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import javax.security.auth.login.LoginException;
 
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
+import org.darkrpa.discord.bots.june.events.AyudaMenuListener;
 import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
 import org.darkrpa.discord.bots.june.events.TestCommandListener;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
@@ -46,7 +47,8 @@ public final class Main {
 
         FirstRunEventListener fRunEventListener = new FirstRunEventListener(this.bot);
         TestCommandListener testCommandListener = new TestCommandListener(this.bot);
-        this.bot.addEventListener(fRunEventListener, testCommandListener);
+        AyudaMenuListener ayudaMenuListener = new AyudaMenuListener(this.bot);
+        this.bot.addEventListener(fRunEventListener, testCommandListener, ayudaMenuListener);
 
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase
