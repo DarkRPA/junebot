@@ -1,4 +1,4 @@
-package org.darkrpa.discord.bots.june;
+package org.darkrpa.discord.bots.june.test;
 
 import org.junit.jupiter.api.Test;
 

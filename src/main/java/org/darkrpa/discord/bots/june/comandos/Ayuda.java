@@ -7,10 +7,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.darkrpa.discord.bots.june.Main;
+import org.darkrpa.discord.bots.june.model.EnvOption;
 import org.darkrpa.discord.bots.june.model.HelpCategory;
 import org.darkrpa.discord.bots.june.model.HelpOption;
+import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -25,6 +29,8 @@ public class Ayuda implements Comando{
     private static ArrayList<HelpCategory> categories;
     private static ArrayList<HelpOption> comandos;
 
+    private String idMensaje;
+
     static{
         //Cargamos las ayudas
         Ayuda.categories = new ArrayList<>();
@@ -38,6 +44,21 @@ public class Ayuda implements Comando{
         if(evento instanceof MessageReceivedEvent){
             MessageReceivedEvent eventoReal = (MessageReceivedEvent) evento;
             MessageChannel canal = eventoReal.getChannel();
+            //Vamos a enviarle un embed
+            String nombreLogo = Main.getOption(EnvOption.BOT_ICON).getValor();
+            File logo = new File(nombreLogo);
+
+            EmbedCreator designer = EmbedCreator.generateDefaultTemplate();
+            designer.title("Ayuda.");
+            designer.description("Comando de ayuda");
+            designer.thumbnail(String.format("attachment://%s", logo));
+            designer.addField("Descripción", "Utiliza el desplegable abajo de este mensaje para poder navegar por las diferentes categorias y comandos");
+            MessageEmbed embed = designer.build();
+
+            canal.sendMessageEmbeds(embed).addFile(logo).queue((mensaje)->{
+                //Tenemos el mensaje, ahora le añadimos el buscador
+
+            });
 
         }else{
             return;

@@ -35,6 +35,15 @@ public class EmbedCreator {
         return this;
     }
 
+    public EmbedCreator addField(String nombre, String texto){
+        return this.addField(nombre, texto, false);
+    }
+
+    public EmbedCreator addField(String nombre, String texto, boolean inline){
+        this.builder.addField(nombre, texto, inline);
+        return this;
+    }
+
     public EmbedCreator description(String description){
         this.builder.setDescription(description);
         return this;
@@ -88,7 +97,7 @@ public class EmbedCreator {
         EmbedCreator creator = new EmbedCreator();
 
         creator.setColor(Integer.parseInt(red.getValor()), Integer.parseInt(green.getValor()), Integer.parseInt(blue.getValor()));
-        creator.footer(String.format("%s - v%s", botName, botVersion));
+        creator.footer(String.format("%s - v%s", botName.getValor(), botVersion.getValor()));
         return creator;
     }
 }
