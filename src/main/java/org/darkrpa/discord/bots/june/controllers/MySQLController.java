@@ -101,7 +101,7 @@ public class MySQLController {
 
                 //Debemos de concatenar un and al final de cada iteracion pero antes debemos de comprobar que no sea el ultimo
 
-                sentencia += "'"+columna+"' = '"+idSeleccionada+"'";
+                sentencia += columna+" = '"+idSeleccionada+"'";
 
                 if(!(i+1 >= primaryKeys.size())){
                     //Añadimos el and

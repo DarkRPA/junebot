@@ -8,8 +8,8 @@ public class Testing {
         MySQLController controller = new MySQLController();
         Main.setMySQLController(controller);
         Servidor server = new Servidor("1234");
-        server.setCantUsuarios(150);
-        server.actualizar();
+        server.setCantUsuarios(20);
+        server.eliminar();
         System.out.println();
     }
 }

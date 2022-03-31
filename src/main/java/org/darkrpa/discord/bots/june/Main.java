@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import javax.security.auth.login.LoginException;
 
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
+import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
 import org.darkrpa.discord.bots.june.model.EnvOption;
 
@@ -41,6 +42,10 @@ public final class Main {
         this.bot = consBuilder.build();
         //Esperamos a que el bot cargue correctamente
         this.bot.awaitReady();
+
+        FirstRunEventListener fRunEventListener = new FirstRunEventListener(this.bot);
+        this.bot.addEventListener(fRunEventListener);
+
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase
         Main.controlador = new MySQLController();
@@ -69,6 +74,7 @@ public final class Main {
             BufferedReader lector = new BufferedReader(new FileReader(fichero));
             String linea = "";
             while((linea = lector.readLine()) != null){
+                if(linea.startsWith("#") || linea.isEmpty()) continue;
                 //tenemos la linea por lo que ahora hacemos un objeto del tipo
                 StringTokenizer tokens = new StringTokenizer(linea, "=");
                 //Ya tenemos el token por lo que ahora agarramos realmente el valor

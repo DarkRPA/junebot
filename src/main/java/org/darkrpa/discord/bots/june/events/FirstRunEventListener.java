@@ -22,7 +22,7 @@ public class FirstRunEventListener extends AbstractEventListener{
             Guild server = evento.getGuild();
             //Tenemos el servidor, como es la primera vez que se ejecuta no tendra canal de bienvenida
             Servidor servidor = new Servidor(server.getId(), server.getMemberCount());
-
+            servidor.actualizar();
         }
     }
 

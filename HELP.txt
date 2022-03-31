@@ -1,0 +1,16 @@
+# Este fichero se va a encargar de mantener todos los comandos del bot y sus ayudas. Como el bot va a centrarse
+# mayoritariamente a administración deberemos de categorizar los comandos según su función más interna
+# Por el momento como no sabemos muchos comandos vamos a crear una categoria 0 llamada general donde esten todos
+# Cada comando podrá estar en más de una categoria a la vez por lo que la categoría será lo último
+
+# Estructura de las categorias
+# La estructura de una categoria será parecida a como la hicimos con El Tiempo Bot
+# ctg:NombreCategoria:DescripcionCategoria:idCategoria
+# Estructura de los comandos
+# cmd:NombreComando:DescripcionComando:ejemploDeUso:<idsDeCategorias>
+
+# Categorias
+ctg:General:Categoria general:0
+
+#Comandos
+cmd:ayuda:Muestra la ayuda general:ayuda <comando> para conseguir ayuda sobre un comando en especifico:0

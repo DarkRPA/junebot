@@ -51,7 +51,7 @@ public class Servidor extends ObjetoGuardable{
             return false;
         }
 
-        String sentencia = String.format("DELETE FROM 'servidor' WHERE 'idServidor' = '%s'", this.idServidor);
+        String sentencia = String.format("DELETE FROM servidor WHERE idServidor = '%s'", this.idServidor);
         int resultado = this.controller.execute(sentencia);
         if(resultado >= 1){
             return true;
@@ -66,7 +66,7 @@ public class Servidor extends ObjetoGuardable{
         if(!super.guardado){
             sentencia = String.format("INSERT INTO servidor VALUES ('%s', '%d', '%s');", this.idServidor, this.cantUsuarios, this.idCanalBienvenida);
         }else{
-            sentencia = String.format("UPDATE servidor SET 'idServidor' = '%s', 'cantUsuarios' = '%d', 'idCanalBienvenida' = '%s' WHERE 'idServidor' = '%s'", this.idServidor, this.cantUsuarios, this.idCanalBienvenida, this.idServidor);
+            sentencia = String.format("UPDATE servidor SET idServidor = '%s', cantUsuarios = '%d', idCanalBienvenida = '%s' WHERE idServidor = '%s'", this.idServidor, this.cantUsuarios, this.idCanalBienvenida, this.idServidor);
         }
 
         int resultado = this.controller.execute(sentencia);
@@ -88,7 +88,7 @@ public class Servidor extends ObjetoGuardable{
         try {
             if(super.controller.exist("servidor", columnas, keys)){
                 //Existe por lo que debemos de conseguir los datos
-                String sentencia = "SELECT * FROM servidor WHERE 'idServidor' = '"+(String)id+"'";
+                String sentencia = "SELECT * FROM servidor WHERE idServidor = '"+(String)id+"'";
                 ArrayList<HashMap<String, Object>> obtenido = this.controller.get(sentencia);
                 //Debemos acceder a la primera fila pues es la unica que va a ver, o deberia haber
                 HashMap<String, Object> fila = obtenido.get(0);
