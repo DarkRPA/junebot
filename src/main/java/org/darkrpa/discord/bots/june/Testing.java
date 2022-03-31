@@ -13,6 +13,6 @@ public class Testing {
         server.eliminar();
         System.out.println();*/
         Ayuda s = new Ayuda();
-        s.ejecutar();
+        //s.ejecutar();
     }
 }

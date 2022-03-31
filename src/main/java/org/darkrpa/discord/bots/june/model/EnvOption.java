@@ -6,6 +6,7 @@ public class EnvOption {
     public final static String DATABASE_USER = "DATABASE_USER";
     public final static String DATABASE_PASSWORD = "DATABASE_PASSWORD";
     public final static String DATABASE_MAIN_DATABASE = "DATABASE_MAIN_DATABASE";
+    public final static String DISCORD_TOKEN = "DISCORD_TOKEN";
     public final static String BOT_VERSION = "BOT_VERSION";
     public final static String BOT_NAME = "BOT_NAME";
     public final static String BOT_ICON = "BOT_ICON";
