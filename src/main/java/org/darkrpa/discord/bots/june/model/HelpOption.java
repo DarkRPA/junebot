@@ -51,6 +51,13 @@ public class HelpOption {
         this.categories = categories;
     }
 
-
+    public boolean hasCategory(String idCategory){
+        for(HelpCategory category : this.categories){
+            if(category.getIdCategoria().equals(idCategory)){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

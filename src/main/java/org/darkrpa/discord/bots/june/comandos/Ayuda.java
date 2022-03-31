@@ -64,7 +64,8 @@ public class Ayuda implements Comando{
                 //Debemos de cargar en el menu todas las opciones de las categorias
                 Message mensajeReal = mensaje;
                 ActionRow layout = null;
-                Builder selectMenuBuilder = SelectMenu.create("menu_ayuda");
+                Builder selectMenuBuilder = SelectMenu.create("menu_ayuda_general");
+                //Tenemos que tambien poner una opcion de ir hacia atras
                 for(HelpCategory categoria : Ayuda.categories){
                     selectMenuBuilder.addOption(categoria.getNombreCategoria(), categoria.getIdCategoria());
                 }
@@ -157,4 +158,11 @@ public class Ayuda implements Comando{
         return comando;
     }
 
+    public static ArrayList<HelpCategory> getCategories(){
+        return Ayuda.categories;
+    }
+
+    public static ArrayList<HelpOption> getComandos(){
+        return Ayuda.comandos;
+    }
 }

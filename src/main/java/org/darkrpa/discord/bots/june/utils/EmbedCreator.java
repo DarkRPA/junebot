@@ -100,4 +100,8 @@ public class EmbedCreator {
         creator.footer(String.format("%s - v%s", botName.getValor(), botVersion.getValor()));
         return creator;
     }
+
+    public static String getLogoURL(){
+        return "attachment://"+Main.getOption(EnvOption.BOT_ICON).getValor();
+    }
 }

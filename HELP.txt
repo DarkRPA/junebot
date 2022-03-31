@@ -11,6 +11,8 @@
 
 # Categorias
 ctg:General:Categoria general:0
+ctg:Test Categoria: Categoria de prueba:1
 
 #Comandos
 cmd:ayuda:Muestra la ayuda general:ayuda <comando> para conseguir ayuda sobre un comando en especifico:0
+cmd:comando:Comando de prueba:Esto es un comando de prueba:0:1
