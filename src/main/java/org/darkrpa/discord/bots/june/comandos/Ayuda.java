@@ -13,10 +13,14 @@ import org.darkrpa.discord.bots.june.model.HelpCategory;
 import org.darkrpa.discord.bots.june.model.HelpOption;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
+import net.dv8tion.jda.api.interactions.components.selections.SelectMenu.Builder;
 
 /**
  * Comando encargado de poder mostrar la ayuda
@@ -57,7 +61,11 @@ public class Ayuda implements Comando{
 
             canal.sendMessageEmbeds(embed).addFile(logo).queue((mensaje)->{
                 //Tenemos el mensaje, ahora le añadimos el buscador
-
+                Message mensajeReal = mensaje;
+                Builder selectMenuBuilder = SelectMenu.create("menuAyuda");
+                selectMenuBuilder.addOption("test", "test2");
+                ActionRow row = ActionRow.of(selectMenuBuilder.build());
+                mensajeReal.editMessageComponents(row).queue();
             });
 
         }else{
