@@ -1,12 +1,17 @@
 package org.darkrpa.discord.bots.june.model;
 
 public class EnvOption {
-    public static String DATABASE_URL = "DATABASE_URL";
-    public static String DATABASE_PORT = "DATABASE_PORT";
-    public static String DATABASE_USER = "DATABASE_USER";
-    public static String DATABASE_PASSWORD = "DATABASE_PASSWORD";
-    public static String DATABASE_MAIN_DATABASE = "DATABASE_MAIN_DATABASE";
-    public static String DISCORD_TOKEN = "DISCORD_TOKEN";
+    public final static String DATABASE_URL = "DATABASE_URL";
+    public final static String DATABASE_PORT = "DATABASE_PORT";
+    public final static String DATABASE_USER = "DATABASE_USER";
+    public final static String DATABASE_PASSWORD = "DATABASE_PASSWORD";
+    public final static String DATABASE_MAIN_DATABASE = "DATABASE_MAIN_DATABASE";
+    public final static String BOT_VERSION = "BOT_VERSION";
+    public final static String BOT_NAME = "BOT_NAME";
+    public final static String BOT_ICON = "BOT_ICON";
+    public final static String EMBED_COLOR_RED = "EMBED_COLOR_RED";
+    public final static String EMBED_COLOR_GREEN = "EMBED_COLOR_GREEN";
+    public final static String EMBED_COLOR_BLUE = "EMBED_COLOR_BLUE";
 
     private String nombre;
     private String valor;
