@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
-import org.darkrpa.discord.bots.june.model.EnvOption;
 import org.darkrpa.discord.bots.june.model.HelpOption;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;

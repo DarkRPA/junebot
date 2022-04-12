@@ -6,11 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+import java.util.concurrent.TimeUnit;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.EnvOption;
 import org.darkrpa.discord.bots.june.model.HelpCategory;
 import org.darkrpa.discord.bots.june.model.HelpOption;
+import org.darkrpa.discord.bots.june.model.MensajeAyudaEfimero;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.entities.Message;
@@ -72,6 +74,11 @@ public class Ayuda implements Comando{
                 SelectMenu menuListo = selectMenuBuilder.build();
                 layout = ActionRow.of(menuListo);
                 mensajeReal.editMessageComponents(layout).queue();
+
+                //Añadimos el mensaje a la lista de timers
+                MensajeAyudaEfimero mensajeTimer = new MensajeAyudaEfimero(mensajeReal);
+                Main.getTimerVerifier().anadirOpcion(mensajeTimer);
+
             });
 
         }else{

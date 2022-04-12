@@ -16,6 +16,7 @@ import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
 import org.darkrpa.discord.bots.june.events.TestCommandListener;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
 import org.darkrpa.discord.bots.june.model.EnvOption;
+import org.darkrpa.discord.bots.june.thread.TimerVerifier;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -25,6 +26,7 @@ import net.dv8tion.jda.api.JDABuilder;
  */
 public final class Main {
     private static ArrayList<EnvOption> listaOpciones;
+    private static TimerVerifier timer;
     private static MySQLController controlador;
     //Ahora que ya tenemos cargada la lista de opciones y el funcionamiento basico para recoger opciones especificas
     //tenemos que comenzar a crear el funcionamiento basico del bot
@@ -32,6 +34,7 @@ public final class Main {
     static{
         try {
             Main.listaOpciones = Main.readEnvFile();
+            Main.timer = new TimerVerifier();
         } catch (EnvFileDoesntExistException | IOException e) {
             e.printStackTrace();
         }
@@ -117,5 +120,9 @@ public final class Main {
     //ESTO DEBE DE ESTAR ACCESIBLE
     public static void setMySQLController(MySQLController controller){
         Main.controlador = controller;
+    }
+
+    public static TimerVerifier getTimerVerifier(){
+        return Main.timer;
     }
 }

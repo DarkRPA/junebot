@@ -13,6 +13,7 @@ public class EnvOption {
     public final static String EMBED_COLOR_RED = "EMBED_COLOR_RED";
     public final static String EMBED_COLOR_GREEN = "EMBED_COLOR_GREEN";
     public final static String EMBED_COLOR_BLUE = "EMBED_COLOR_BLUE";
+    public final static String DEFAULT_EXECTUABLE_TIME = "DEFAULT_EXECTUABLE_TIME";
 
     private String nombre;
     private String valor;
