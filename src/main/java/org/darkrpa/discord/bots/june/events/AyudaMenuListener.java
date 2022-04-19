@@ -1,21 +1,26 @@
 package org.darkrpa.discord.bots.june.events;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
+import org.darkrpa.discord.bots.june.model.EnvOption;
+import org.darkrpa.discord.bots.june.model.HelpCategory;
 import org.darkrpa.discord.bots.june.model.HelpOption;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu.Builder;
+
+//TODO Intentar que los Emojis se vean bien en las opciones
 
 public class AyudaMenuListener extends AbstractEventListener{
 
@@ -30,60 +35,129 @@ public class AyudaMenuListener extends AbstractEventListener{
             //Debemos de saber que el menu que se ha seleccionado es el menu de la ayuda, sino
             //Tenemos que dejarlo ir sin hacer nada
             SelectMenu menu = evento.getSelectMenu();
-            if(menu.getId().startsWith("menu_ayuda")){
-                Message mensaje = evento.getMessage();
-                ArrayList<HelpOption> comandos = Ayuda.getComandos();
-                if(menu.getId().equals("menu_ayuda_general")){
-                    //Sabemos que es el menu de la ayuda por lo que podemos seguir con la operacion
-                    //Y que concretamente es el general por lo que ahora hay que cargar el menu de la categoria
-                    //seleccionada
-                    //Guardaremos el menu de back para poder ir hacia atras
-                    String nombreCategoria = evento.getSelectedOptions().get(0).getLabel();
-                    String categoriaSeleccionada = evento.getSelectedOptions().get(0).getValue();
-                    List<HelpOption> comandosConCategoria = comandos.stream().filter(e->e.hasCategory(categoriaSeleccionada)).collect(Collectors.toList());
+            Message mensaje = evento.getMessage();
+            SelectOption opcionSeleccionada = evento.getSelectedOptions().get(0);
 
-                    //Debemos de hacer el embed con
+            if(menu.getId().equals("menu_ayuda_general")){
+                //Sabemos que esta en el menu principal por lo que debemos de cargar la vista de la categoria
+                HelpCategory categoria = Ayuda.buscarCategory(opcionSeleccionada.getLabel());
+                //Tenemos la categoria por lo que generamos tanto el embed como el menu
+                MessageEmbed mensajeCategoria = this.getCategoriaEmbed(categoria);
+                Builder constructor = this.getMenuCategoria(categoria);
 
-                    EmbedCreator defaultEmbed = EmbedCreator.generateDefaultTemplate();
-                    String aMostrar = "```";
+                //Editamos el mensaje
 
-                    for(HelpOption comando : comandosConCategoria){
-                        aMostrar += "["+comando.getNombreComando()+"] ";
-                    }
+                mensaje.editMessageEmbeds(mensajeCategoria).queue(mensajeResultante -> {
+                    evento.editComponents(ActionRow.of(constructor.build())).queue();
+                });
+            }else if(menu.getId().equals("menu_ayuda_categoria")){
+                //Sabemos que esta en el menu principal por lo que debemos de cargar la vista de la categoria
 
-                    aMostrar += "```";
+                if(opcionSeleccionada.getValue().toLowerCase().equals("volver")){
+                    //Sabemos que quiere volver
+                    MessageEmbed embed = this.getGeneralEmbed();
+                    Builder constructor = this.getMenuGeneral();
 
-                    defaultEmbed.title(nombreCategoria);
-                    defaultEmbed.thumbnail(EmbedCreator.getLogoURL());
-                    defaultEmbed.addField("Comandos: ", aMostrar);
+                    mensaje.editMessageEmbeds(embed).queue(mensajeResultante -> {
+                        evento.editComponents(ActionRow.of(constructor.build())).queue();
+                    });
 
-                    mensaje.editMessageEmbeds(defaultEmbed.build()).queue();
-
-                    //Ahora debemos de poner el nuevo menu
-                    ActionRow layout;
-                    Builder builder = SelectMenu.create("menu_ayuda_categoria");
-                    for(HelpOption comando : comandosConCategoria){
-                        builder.addOption(comando.getNombreComando(), comando.getNombreComando());
-                    }
-                    layout = ActionRow.of(builder.build());
-                    evento.editComponents(layout).queue();
-                }else if(menu.getId().equals("menu_ayuda_categoria")){
-
-                    SelectOption seleccionado = evento.getSelectedOptions().get(0);
-                    String nombre = seleccionado.getLabel();
-                    HelpOption comando = comandos.stream().filter(e->e.getNombreComando().equals(nombre)).collect(Collectors.toList()).get(0);
-                    //tenemos el comando por lo que podemos editar el embed para mostrar su informacion
-
-                    EmbedCreator creator = EmbedCreator.generateDefaultTemplate();
-                    creator.title(comando.getNombreComando());
-                    creator.thumbnail(EmbedCreator.getLogoURL());
-                    creator.addField("Descripcion", comando.getDescripcion());
-                    creator.addField("Como usar:", comando.getCasoDeUso());
-                    mensaje.editMessageEmbeds(creator.build()).queue();
-                    evento.editComponents().queue();
+                    return;
                 }
+
+                HelpOption comando = Ayuda.buscarComando(opcionSeleccionada.getLabel());
+                //Tenemos la categoria por lo que generamos tanto el embed como el menu
+                MessageEmbed mensajeComando = this.getComandoEmbed(comando);
+                Builder constructor = this.getMenuGeneral();
+
+                //Editamos el mensaje
+
+                mensaje.editMessageEmbeds(mensajeComando).queue(mensajeResultante -> {
+                    evento.editComponents(ActionRow.of(constructor.build())).queue();
+                });
             }
         }
+    }
+
+    public Builder getMenuGeneral(){
+        //Debemos de crear el menu general aqui, para ellos cogeremos todas las categorias y las pondremos
+        //en un menu
+
+        Builder selectMenuBuilder = SelectMenu.create("menu_ayuda_general");
+                //Tenemos que tambien poner una opcion de ir hacia atras
+        for(HelpCategory categoria : Ayuda.getCategories()){
+            selectMenuBuilder.addOption(categoria.getNombreCategoria(), categoria.getIdCategoria());
+        }
+
+        return selectMenuBuilder;
+    }
+
+    public Builder getMenuCategoria(HelpCategory categoria){
+
+        List<HelpOption> listaComandosCategoria = Ayuda.getComandosEnCategoria(categoria);
+
+        Builder constructor = SelectMenu.create("menu_ayuda_categoria");
+
+        constructor.addOption("Volver", "Volver");
+
+        for(HelpOption comando : listaComandosCategoria){
+            //Tenemos los comandos, ahora los convertimos en menu y le ponemos un boton de atras
+            constructor.addOption(comando.getNombreComando(), comando.getNombreComando());
+        }
+
+        return constructor;
+    }
+
+    public MessageEmbed getGeneralEmbed(){
+        String nombreLogo = Main.getOption(EnvOption.BOT_ICON).getValor();
+        File logo = new File(nombreLogo);
+
+        EmbedCreator designer = EmbedCreator.generateDefaultTemplate();
+        designer.title("Ayuda.");
+        designer.description("Comando de ayuda");
+        designer.thumbnail(String.format("attachment://%s", logo));
+        designer.addField("Descripción", "Utiliza el desplegable abajo de este mensaje para poder navegar por las diferentes categorias y comandos");
+        MessageEmbed embed = designer.build();
+        return embed;
+    }
+
+    public MessageEmbed getCategoriaEmbed(HelpCategory category){
+        List<HelpOption> listaComandos = Ayuda.getComandosEnCategoria(category);
+
+
+
+        EmbedCreator designer = EmbedCreator.generateDefaultTemplate();
+
+        String nombreLogo = Main.getOption(EnvOption.BOT_ICON).getValor();
+        File logo = new File(nombreLogo);
+        designer.thumbnail(String.format("attachment://%s", logo));
+
+        designer.title(category.getNombreCategoria());
+        designer.description(category.getDescripcionCategoria());
+
+
+        String resultadoComandos = "";
+        for(HelpOption comando : listaComandos){
+            resultadoComandos += "`"+comando+"` ";
+        }
+
+        designer.addField("Comandos:", resultadoComandos);
+
+        return designer.build();
+    }
+
+    public MessageEmbed getComandoEmbed(HelpOption comando){
+        EmbedCreator designer = EmbedCreator.generateDefaultTemplate();
+
+        String nombreLogo = Main.getOption(EnvOption.BOT_ICON).getValor();
+        File logo = new File(nombreLogo);
+        designer.thumbnail(String.format("attachment://%s", logo));
+
+        designer.title(comando.getNombreComando());
+        designer.description(comando.getDescripcion());
+        designer.addField("Como usar:", comando.getCasoDeUso());
+
+        return designer.build();
     }
 
 }

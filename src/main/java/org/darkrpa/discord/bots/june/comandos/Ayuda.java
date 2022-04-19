@@ -5,8 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Locale.Category;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.EnvOption;
@@ -113,6 +116,8 @@ public class Ayuda implements Comando{
         }
     }
 
+
+
     private static HelpCategory interpretarCategoria(String linea){
         //Esperamos recibir una linea con formato de categoria
         StringTokenizer tokens = new StringTokenizer(linea, ":");
@@ -163,6 +168,28 @@ public class Ayuda implements Comando{
             }
         }
         return comando;
+    }
+
+    /**
+     * Este metodo se va aencargar de buscar un comando en base a un nombre dado
+     * @param nombre
+     * @return
+     */
+    public static HelpOption buscarComando(String nombre){
+        for(HelpOption comando : Ayuda.comandos){
+            if(comando.getNombreComando().equals(nombre.toLowerCase())){
+                return comando;
+            }
+        }
+        return null;
+    }
+
+    public static List<HelpOption> getComandosEnCategoria(HelpCategory categoria){
+        return Ayuda.comandos.stream().filter(e -> e.getCategories().contains(categoria)).collect(Collectors.toList());
+    }
+
+    public static HelpCategory buscarCategory(String categoria){
+        return Ayuda.categories.stream().filter(e->e.getNombreCategoria().equals(categoria)).collect(Collectors.toList()).get(0);
     }
 
     public static ArrayList<HelpCategory> getCategories(){

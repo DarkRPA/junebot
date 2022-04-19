@@ -60,4 +60,11 @@ public class HelpOption {
         return false;
     }
 
+    @Override
+    public String toString() {
+        return this.getNombreComando();
+    }
+
+
+
 }
