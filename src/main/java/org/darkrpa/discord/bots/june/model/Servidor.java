@@ -79,7 +79,7 @@ public class Servidor extends ObjetoGuardable{
     }
 
     @Override
-    public void get(Object id) {
+    public void get(Object ... id) {
         //Reemplaza las propiedades de este objeto con las propiedades del objeto que hay en la base de datos
         ArrayList<String> columnas = new ArrayList<>();
         columnas.add("idServidor");
@@ -88,7 +88,7 @@ public class Servidor extends ObjetoGuardable{
         try {
             if(super.controller.exist("servidor", columnas, keys)){
                 //Existe por lo que debemos de conseguir los datos
-                String sentencia = "SELECT * FROM servidor WHERE idServidor = '"+(String)id+"'";
+                String sentencia = "SELECT * FROM servidor WHERE idServidor = '"+(String)id[0]+"'";
                 ArrayList<HashMap<String, Object>> obtenido = this.controller.get(sentencia);
                 //Debemos acceder a la primera fila pues es la unica que va a ver, o deberia haber
                 HashMap<String, Object> fila = obtenido.get(0);
@@ -115,7 +115,7 @@ public class Servidor extends ObjetoGuardable{
                 super.guardado = true;
             }else{
                 //No existe por lo que lo unico que podemos hacer es asignar el id al objeto
-                this.idServidor = (String) id;
+                this.idServidor = (String) id[0];
                 super.guardado = false;
             }
         } catch (UnpairedArraysException e) {

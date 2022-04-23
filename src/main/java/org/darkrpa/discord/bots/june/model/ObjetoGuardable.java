@@ -26,5 +26,5 @@ public abstract class ObjetoGuardable {
      * Metodo get, este metodo get lo que hara sera buscar en la tabla de la clase un objeto con la id especifica
      * sino no lo encuentra lo creara con esa id y vacio, hasta que no se actualice no se insertará en la base de datos
      */
-    public abstract void get(Object id);
+    public abstract void get(Object ... id);
 }
