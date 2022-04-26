@@ -1,3 +1,7 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.completion.filteredTypes" : [
+      "java.awt.List",
+      "com.sun.*"
+  ],
 }

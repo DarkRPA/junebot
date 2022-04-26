@@ -13,6 +13,7 @@ import javax.security.auth.login.LoginException;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.events.AyudaMenuListener;
 import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
+import org.darkrpa.discord.bots.june.events.NivelesListener;
 import org.darkrpa.discord.bots.june.events.TestCommandListener;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
 import org.darkrpa.discord.bots.june.model.EnvOption;
@@ -20,6 +21,7 @@ import org.darkrpa.discord.bots.june.thread.TimerVerifier;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 /**
  * Hello world!
@@ -43,7 +45,7 @@ public final class Main {
     private JDA bot;
 
     private Main() throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
-        JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor());
+        JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor()).enableIntents(GatewayIntent.GUILD_MEMBERS);
         this.bot = consBuilder.build();
         //Esperamos a que el bot cargue correctamente
         this.bot.awaitReady();
@@ -51,7 +53,8 @@ public final class Main {
         FirstRunEventListener fRunEventListener = new FirstRunEventListener(this.bot);
         TestCommandListener testCommandListener = new TestCommandListener(this.bot);
         AyudaMenuListener ayudaMenuListener = new AyudaMenuListener(this.bot);
-        this.bot.addEventListener(fRunEventListener, testCommandListener, ayudaMenuListener);
+        NivelesListener nivelesListener = new NivelesListener(this.bot);
+        this.bot.addEventListener(fRunEventListener, testCommandListener, ayudaMenuListener, nivelesListener);
 
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase
