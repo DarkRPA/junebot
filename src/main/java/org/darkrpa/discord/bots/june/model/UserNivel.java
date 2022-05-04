@@ -122,6 +122,14 @@ public class UserNivel extends ObjetoGuardable{
         return mensajes;
     }
 
+    public int getExpToNextLvl(){
+        return (int)Math.floor(Math.pow((this.getNivel()+1)/0.75,2));
+    }
+
+    public int getNivel(){
+        return (int)Math.floor(0.75*Math.sqrt(this.mensajes));
+    }
+
     public void setMensajes(int mensajes) {
         this.mensajes = mensajes;
     }

@@ -3,14 +3,17 @@ package org.darkrpa.discord.bots.june.utils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.StringTokenizer;
 
 import javax.imageio.ImageIO;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.EnvOption;
 import org.darkrpa.discord.bots.june.model.UserNivel;
+import org.darkrpa.discord.bots.june.model.Usuario;
 
 import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.User.UserFlag;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -18,6 +21,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -29,16 +34,34 @@ import java.awt.image.BufferedImage;
  * @since 1.0
  */
 public class ImageEditor {
-    public static final int MAX_WIDTH_PROGRESS_BAR = 430;
-    public static final int MAX_HEIGHT_PROGRESS_BAR = 58;
+    public static final int MAX_WIDTH_PROGRESS_BAR = 620;
+    public static final int MAX_HEIGHT_PROGRESS_BAR = 45;
+
+    public static final int AVATAR_X = 58;
+    public static final int AVATAR_Y = 64;
+    public static final int PROGRESS_X = 245;
+    public static final int PROGRESS_Y = 165;
+
+    public static final int NAME_X = 269;
+    public static final int NAME_Y = 96;
+
+    public static final int TAG_X = 415;
+    public static final int TAG_Y = 98;
+
+    public static final int LVL_X = 269;
+    public static final int LVL_Y = 148;
+
+    public static final int EXP_X = 703;
+    public static final int EXP_Y = 148;
+
 
     private BufferedImage imagen;
-    private Graphics graficos;
+    private Graphics2D graficos;
 
     public ImageEditor(File imagen){
         try {
             this.imagen = ImageIO.read(imagen);
-            this.graficos = this.imagen.getGraphics();
+            this.graficos = (Graphics2D) this.imagen.getGraphics();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,6 +86,16 @@ public class ImageEditor {
         return this;
     }
 
+    public ImageEditor draw(Shape forma){
+        this.graficos.draw(forma);
+        return this;
+    }
+
+    public ImageEditor fill(Shape forma){
+        this.graficos.fill(forma);
+        return this;
+    }
+
     public ImageEditor drawImage(Image imagen, int x, int y){
         this.graficos.drawImage(imagen, x, y, null);
         return this;
@@ -82,15 +115,22 @@ public class ImageEditor {
         return fichero;
     }
 
+    public ImageEditor setColor(Color color){
+        this.graficos.setColor(color);
+        return this;
+    }
+
 
     public static ImageEditor generateDefaultNivelTemplate(UserNivel userNivel, User usuario){
-        ImageEditor editor = new ImageEditor(new File("images/levels/imagen-nivel.png"));
+        ImageEditor editor = new ImageEditor(new File("images/levels/PrimeraCapaNivelV2.png"));
         try {
             editor.setDefaultColor();
             BufferedImage avatar = ImageIO.read(new URL(usuario.getAvatarUrl()+"?size=128"));
             //Tenemos el avatar por lo que podemos seguir
-            BufferedImage imagenFinal = ImageIO.read(new File("images/levels/imagen-nivel.png"));
-            editor.drawImage(avatar, 26, 30);
+            BufferedImage imagenFinal = ImageIO.read(new File("images/levels/PrimeraCapaNivelV2.png"));
+            editor.drawImage(avatar, ImageEditor.AVATAR_X, ImageEditor.AVATAR_Y);
+
+
 
             //Porcentaje
             int mensajes = userNivel.getMensajes();
@@ -100,13 +140,36 @@ public class ImageEditor {
                 porcentaje = 0;
             }
             int porcentajeDeBarra = (int) Math.ceil(((ImageEditor.MAX_WIDTH_PROGRESS_BAR/100F)*porcentaje));
-            editor.graficos.fillRect(35, 210, porcentajeDeBarra, ImageEditor.MAX_HEIGHT_PROGRESS_BAR);
+            RoundRectangle2D recta = new RoundRectangle2D.Double(ImageEditor.PROGRESS_X, ImageEditor.PROGRESS_Y, porcentajeDeBarra, ImageEditor.MAX_HEIGHT_PROGRESS_BAR, 50, 50);
+
+            //editor.graficos.fillRect(35, 210, porcentajeDeBarra, ImageEditor.MAX_HEIGHT_PROGRESS_BAR);
+            editor.graficos.fill(recta);
             editor.drawImage(imagenFinal, 0, 0);
-            editor.setFont(new Font("Sans-serif", Font.BOLD, 24));
-            editor.addText("Nivel: "+nivel, 45, 194);
-            editor.setFont(new Font("Sans-serif", Font.PLAIN, 24));
-            editor.graficos.setColor(Color.white);
-            editor.addText(porcentaje+"%", 59, 245);
+            Color colorTag = new Color(146, 126, 111);
+            Color white = Color.WHITE;
+            Color nivelExp = new Color(204, 140, 94);
+
+            Font fontName = new Font("Sans-serif", Font.PLAIN, 32);
+            Font fontTag = new Font("Sans-serif", Font.PLAIN, 24);
+            Font fontNivel = new Font("Sans-serif", Font.PLAIN, 28);
+
+            String username = usuario.getAsTag();
+            StringTokenizer tokens = new StringTokenizer(username, "#");
+            tokens.nextToken();
+            String tag = tokens.nextToken();
+
+            editor.setColor(white);
+            editor.setFont(fontName);
+            editor.addText(usuario.getName(), ImageEditor.NAME_X, ImageEditor.NAME_Y);
+            editor.setColor(colorTag);
+            editor.setFont(fontTag);
+            editor.addText("#"+tag, ImageEditor.TAG_X, ImageEditor.TAG_Y);
+            editor.setColor(nivelExp);
+            editor.setFont(fontNivel);
+            editor.addText("Lvl. "+nivel, ImageEditor.LVL_X, ImageEditor.LVL_Y);
+            editor.addText(userNivel.getMensajes() + " / "+userNivel.getExpToNextLvl()+" EXP", ImageEditor.EXP_X, ImageEditor.EXP_Y);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
