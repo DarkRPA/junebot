@@ -100,7 +100,7 @@ public abstract class Comando {
                 //El comando tiene permisos en la base de datos
                 for(int i = 0; i < listaFilas.size(); i++){
                     HashMap<String, Object> fila = listaFilas.get(i);
-                    String rolObtenidoBD = (String)fila.get("idcomando");
+                    String rolObtenidoBD = (String)fila.get("idRol");
                     if(rolObtenidoBD.equals(rol.getId())){
                         //Puede usarlo
                         return true;

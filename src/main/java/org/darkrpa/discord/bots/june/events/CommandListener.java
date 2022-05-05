@@ -1,15 +1,19 @@
 package org.darkrpa.discord.bots.june.events;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.comandos.Nivel;
+import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
+import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.JDA;
@@ -43,6 +47,10 @@ public class CommandListener extends AbstractEventListener {
     @Override
     public void onEvent(GenericEvent event) {
         if(event instanceof MessageReceivedEvent){
+
+            //Es un mensaje, por lo que ya de paso vamos a comprobar si existe en la base de datos
+            //Si no, lo creamos
+
             MessageReceivedEvent eventoReal = (MessageReceivedEvent) event;
 
             Guild servidor = eventoReal.getGuild();
@@ -53,6 +61,10 @@ public class CommandListener extends AbstractEventListener {
             Pattern patron = Pattern.compile(CommandListener.COMMAND_REGEX);
             Matcher matcher = patron.matcher(mensaje.getContentRaw());
             if(matcher.matches()){
+                Usuario usuario = new Usuario(miembro.getId());
+                usuario.setNombreUsuario(miembro.getUser().getName());
+                usuario.actualizar();
+
                 //Es un comando valido
                 String comando = matcher.group(1).toLowerCase();
                 Class claseComando = null;
