@@ -7,8 +7,8 @@ import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
 
 public class UserNivel extends ObjetoGuardable{
 
-    private String idUsuario;
-    private String idServidor;
+    private Usuario idUsuario;
+    private Servidor idServidor;
     private int mensajes;
     private String tarjetaNivel;
 
@@ -32,15 +32,23 @@ public class UserNivel extends ObjetoGuardable{
     }
     @Override
     public boolean actualizar() {
-        if((this.idUsuario == null || this.idServidor == null )|| (this.idUsuario.trim().isEmpty() || this.idServidor.trim().isEmpty())){
+        if((this.idUsuario == null || this.idServidor == null )|| (this.idUsuario.getIdUsuario().trim().isEmpty() || this.idServidor.getIdServidor().trim().isEmpty())){
             return false;
+        }
+
+        if(!this.idUsuario.guardado){
+            this.idUsuario.actualizar();
+        }
+
+        if(!this.idServidor.guardado){
+            this.idServidor.actualizar();
         }
 
         String sentencia = "";
         if(!super.guardado){
-            sentencia = String.format("INSERT INTO niveles VALUES ('%s', '%s', '%s', '%s');", this.idUsuario, this.idServidor, this.mensajes, this.tarjetaNivel);
+            sentencia = String.format("INSERT INTO niveles VALUES ('%s', '%s', '%s', '%s');", this.idUsuario.getIdUsuario(), this.idServidor.getIdServidor(), this.mensajes, this.tarjetaNivel);
         }else{
-            sentencia = String.format("UPDATE niveles SET idUsuario = '%s', idServidor = '%s', mensajes = '%s', tarjetaNivel = '%s' WHERE idUsuario = '%s' AND idServidor = '%s'", this.idUsuario, this.idServidor, this.mensajes, this.tarjetaNivel, this.idUsuario, this.idServidor);
+            sentencia = String.format("UPDATE niveles SET idUsuario = '%s', idServidor = '%s', mensajes = '%s', tarjetaNivel = '%s' WHERE idUsuario = '%s' AND idServidor = '%s'", this.idUsuario.getIdUsuario(), this.idServidor.getIdServidor(), this.mensajes, this.tarjetaNivel, this.idUsuario.getIdUsuario(), this.idServidor.getIdServidor());
         }
 
         int resultado = this.controller.execute(sentencia);
@@ -74,10 +82,10 @@ public class UserNivel extends ObjetoGuardable{
                 for(String key : columnasObtenidas.keySet()){
                     switch(key){
                         case "idUsuario":
-                            this.idUsuario = (String)columnasObtenidas.get(key);
+                            this.idUsuario = new Usuario((String)columnasObtenidas.get(key));
                             break;
                         case "idServidor":
-                            this.idServidor = (String)columnasObtenidas.get(key);
+                            this.idServidor = new Servidor((String)columnasObtenidas.get(key));
                             break;
                         case "mensajes":
                             this.mensajes = (int)columnasObtenidas.get(key);
@@ -89,8 +97,8 @@ public class UserNivel extends ObjetoGuardable{
                 }
             }else{
                 super.guardado = false;
-                this.idUsuario = (String)id[0];
-                this.idServidor = (String)id[1];
+                this.idUsuario = new Usuario((String)id[0]);
+                this.idServidor = new Servidor((String)id[1]);
             }
         } catch (UnpairedArraysException e) {
             e.printStackTrace();
@@ -102,19 +110,19 @@ public class UserNivel extends ObjetoGuardable{
         this.mensajes++;
     }
 
-    public String getIdUsuario() {
+    public Usuario getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(String idUsuario) {
+    public void setIdUsuario(Usuario idUsuario) {
         this.idUsuario = idUsuario;
     }
 
-    public String getIdServidor() {
+    public Servidor getIdServidor() {
         return idServidor;
     }
 
-    public void setIdServidor(String idServidor) {
+    public void setIdServidor(Servidor idServidor) {
         this.idServidor = idServidor;
     }
 

@@ -84,7 +84,7 @@ public class Servidor extends ObjetoGuardable{
         ArrayList<String> columnas = new ArrayList<>();
         columnas.add("idServidor");
         ArrayList<Object> keys = new ArrayList<>();
-        keys.add(id);
+        keys.add((String)id[0]);
         try {
             if(super.controller.exist("servidor", columnas, keys)){
                 //Existe por lo que debemos de conseguir los datos

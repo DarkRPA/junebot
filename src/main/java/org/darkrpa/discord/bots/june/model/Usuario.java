@@ -69,7 +69,7 @@ public class Usuario extends ObjetoGuardable{
             if(super.controller.exist("usuario", columnas, ides)){
                 super.guardado = true;
 
-                String sentencia = "SELECT * FROM usuario WHERE idUsuario = '"+id+"'";
+                String sentencia = "SELECT * FROM usuario WHERE idUsuario = '"+(String)id[0]+"'";
 
                 ArrayList<HashMap<String, Object>> resultadoGet = super.controller.get(sentencia);
                 HashMap<String, Object> columnasObtenidas = resultadoGet.get(0);
