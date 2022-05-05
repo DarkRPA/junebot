@@ -10,17 +10,13 @@ import javax.imageio.ImageIO;
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.EnvOption;
 import org.darkrpa.discord.bots.june.model.UserNivel;
-import org.darkrpa.discord.bots.june.model.Usuario;
 
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.User.UserFlag;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;

@@ -1,11 +1,5 @@
 package org.darkrpa.discord.bots.june.events;
 
-import java.awt.Font;
-
-import org.darkrpa.discord.bots.june.comandos.Ayuda;
-import org.darkrpa.discord.bots.june.comandos.Nivel;
-import org.darkrpa.discord.bots.june.utils.ImageEditor;
-
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

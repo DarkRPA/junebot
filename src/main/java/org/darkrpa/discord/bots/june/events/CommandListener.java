@@ -1,18 +1,14 @@
 package org.darkrpa.discord.bots.june.events;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.comandos.Nivel;
-import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
 import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
@@ -20,7 +16,6 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 

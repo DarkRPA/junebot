@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.iwebpp.crypto.TweetNaclFast.Hash;
-
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
