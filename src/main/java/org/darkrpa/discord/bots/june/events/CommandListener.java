@@ -2,6 +2,7 @@ package org.darkrpa.discord.bots.june.events;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,9 +10,13 @@ import java.util.regex.Pattern;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.comandos.Nivel;
+import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -39,6 +44,10 @@ public class CommandListener extends AbstractEventListener {
     public void onEvent(GenericEvent event) {
         if(event instanceof MessageReceivedEvent){
             MessageReceivedEvent eventoReal = (MessageReceivedEvent) event;
+
+            Guild servidor = eventoReal.getGuild();
+            Member miembro = eventoReal.getMember();
+
             Message mensaje = eventoReal.getMessage();
             //Tenemos el mensaje, podemos observar si realmente es valido
             Pattern patron = Pattern.compile(CommandListener.COMMAND_REGEX);
@@ -47,11 +56,14 @@ public class CommandListener extends AbstractEventListener {
                 //Es un comando valido
                 String comando = matcher.group(1).toLowerCase();
                 Class claseComando = null;
+                String nombreComando = "";
                 Set<String> entries = this.COMMAND_CLASS_MAP.keySet();
 
                 for(String key : entries){
                     if(key.equals(comando)){
                         claseComando = this.COMMAND_CLASS_MAP.get(key);
+                        nombreComando = key;
+                        break;
                     }
                 }
 
@@ -63,8 +75,17 @@ public class CommandListener extends AbstractEventListener {
                 //Instanciamos la clase
 
                 try {
-                    Comando comandoReal = (Comando) claseComando.getConstructors()[0].newInstance();
-                    comandoReal.ejecutar(eventoReal);
+                    Comando comandoReal = (Comando) claseComando.getConstructors()[0].newInstance(nombreComando);
+                    //Verificamos que puede ejecutar el comando
+
+                    if(comandoReal.puedeEjecutar(servidor, miembro)){
+                        comandoReal.ejecutar(eventoReal);
+                    }else{
+                        EmbedCreator creator = EmbedCreator.generateDefaultTemplate();
+                        creator.description("No puede ejecutar este comando");
+                        mensaje.replyEmbeds(creator.build()).queue();
+                    }
+
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | SecurityException e) {
                     e.printStackTrace();

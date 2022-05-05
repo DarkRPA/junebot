@@ -30,14 +30,19 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectMenu.Builder
 /**
  * Comando encargado de poder mostrar la ayuda
  */
-public class Ayuda implements Comando{
+public class Ayuda extends Comando{
 
     //Para no tener que interpretar la ayuda cada vez que se ejecute el comando ayuda vamos a almacenarla de forma
     //estatica, asi todas las ayudas accederan al mismo array
 
+    public Ayuda(String nombre) {
+        super(nombre);
+    }
+
     private static ArrayList<HelpCategory> categories;
     private static ArrayList<HelpOption> comandos;
 
+    private String nombre;
     private String idMensaje;
 
     static{
@@ -198,5 +203,11 @@ public class Ayuda implements Comando{
 
     public static ArrayList<HelpOption> getComandos(){
         return Ayuda.comandos;
+    }
+
+    @Override
+    public String getCommandName() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

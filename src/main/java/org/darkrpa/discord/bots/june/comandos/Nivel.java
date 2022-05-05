@@ -6,7 +6,11 @@ import org.darkrpa.discord.bots.june.utils.ImageEditor;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class Nivel implements Comando{
+public class Nivel extends Comando{
+
+    public Nivel(String nombre) {
+        super(nombre);
+    }
 
     @Override
     public void ejecutar(GenericEvent evento) {

@@ -23,9 +23,9 @@ public class TestCommandListener extends AbstractEventListener{
             MessageReceivedEvent eventoReal = (MessageReceivedEvent)event;
             String mensaje = eventoReal.getMessage().getContentDisplay();
             if(mensaje.equals("!ayuda")){
-                new Ayuda().ejecutar(eventoReal);
+                //new Ayuda().ejecutar(eventoReal);
             }else if(mensaje.equals("!nivel")){
-                new Nivel().ejecutar(eventoReal);
+                //new Nivel().ejecutar(eventoReal);
             }
         }
     }
