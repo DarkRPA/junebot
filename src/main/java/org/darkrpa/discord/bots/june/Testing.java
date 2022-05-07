@@ -5,6 +5,7 @@ import java.io.File;
 
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
+import org.darkrpa.discord.bots.june.model.Logging;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.StaffRol;
 import org.darkrpa.discord.bots.june.model.UserNivel;
@@ -24,8 +25,9 @@ public class Testing {
 
         Servidor servidor = new Servidor("djah");
 
-        Usuario usuario = new Usuario("311242525598023691");
-
+        Logging log = new Logging("djah");
+        log.setPermisos(1);
+        log.actualizar();
         System.out.println();
 
 

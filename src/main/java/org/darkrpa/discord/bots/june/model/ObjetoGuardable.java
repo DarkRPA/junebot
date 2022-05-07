@@ -200,8 +200,6 @@ public class ObjetoGuardable {
                         query += columnas+" VALUES "+valores;
                     }
 
-                    System.out.println();
-
 
                 }else{
                     return false;
@@ -209,33 +207,12 @@ public class ObjetoGuardable {
 
                 //Tenemos la query de la consulta, podemos proceder
 
-                ArrayList<HashMap<String, Object>> resultadoDB = this.controller.get(query);
-
-                //Tenemos los datos
-                //Esta guardado
-                if(resultadoDB.size() == 0){
-                    this.guardado = false;
-                }else{
+                if(this.controller.execute(query) >= 1){
                     this.guardado = true;
-                }
-
-                for(HashMap<String, Object> mapa : resultadoDB){
-                    for(int indexMetodo = 0; indexMetodo < metodos.length; indexMetodo++){
-                        Method metodoActual = metodos[indexMetodo];
-                        if(metodoActual.isAnnotationPresent(CampoSetter.class)){
-                            //Sabemos que es un metodo para hacer un set
-                            Annotation annotation = metodoActual.getAnnotation(CampoSetter.class);
-                            //Sabemos que solo tiene un metodo la anotacion por lo que no la recorremos con un bucle
-                            Method nombreColumnaMethod = annotation.annotationType().getMethod("nombreColumna");
-                            String nombreColumna = (String) nombreColumnaMethod.invoke(annotation);
-
-                            if(mapa.containsKey(nombreColumna)){
-                                //Es la misma columna
-                                //Le damos su valor :)
-                                metodoActual.invoke(this, mapa.get(nombreColumna));
-                            }
-                        }
-                    }
+                    return true;
+                }else{
+                    this.guardado = false;
+                    return false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -244,8 +221,6 @@ public class ObjetoGuardable {
         }else{
             this.guardado = false;
         }
-
-
         return false;
     }
     /**
