@@ -22,7 +22,9 @@ public class Testing {
 
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
+        Servidor servidor = new Servidor("djah");
 
+        servidor.actualizar();
         System.out.println();
 
 
