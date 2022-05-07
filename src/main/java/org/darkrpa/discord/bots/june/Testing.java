@@ -24,7 +24,8 @@ public class Testing {
 
         Servidor servidor = new Servidor("djah");
 
-        servidor.actualizar();
+        Usuario usuario = new Usuario("311242525598023691");
+
         System.out.println();
 
 
