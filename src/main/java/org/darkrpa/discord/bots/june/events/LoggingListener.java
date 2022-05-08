@@ -1,7 +1,14 @@
 package org.darkrpa.discord.bots.june.events;
 
 import org.darkrpa.discord.bots.june.logging.clases.GenericLoggingEvent;
+import org.darkrpa.discord.bots.june.logging.clases.guild.GuildBannerChangeEvent;
+import org.darkrpa.discord.bots.june.logging.clases.guild.GuildNameChangedEvent;
+import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberAvatarChanged;
+import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberNameChanged;
+import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberRoleAdded;
+import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberRoleRemoved;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleCreatedEvent;
+import org.darkrpa.discord.bots.june.logging.clases.roles.RoleDeletedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleNameChangedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RolePermissionUpdateEvent;
 import org.darkrpa.discord.bots.june.model.Logging;
@@ -12,6 +19,12 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
+import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
+import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateAvatarEvent;
+import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateBannerEvent;
+import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.events.role.GenericRoleEvent;
 import net.dv8tion.jda.api.events.role.RoleCreateEvent;
 import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
@@ -27,12 +40,44 @@ import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
  */
 public class LoggingListener extends AbstractEventListener{
 
-    public static final String[] EVENTOS_LOGGING = {"ROL", "ASIG_ROL", "CHAT", "NOMBRE_GUILD", "ICON_CHANGE", "KICK", "WARN", "MUTE", "TEMP_BAN", "SOFT_BAN", "PERM_BAN", "ADD_EXP", "REMOVE_EXP", "SET_WELCOME", "OPEN_TICKET"};
+    public static final String[] EVENTOS_LOGGING = {"ROL", "ASIG_ROL", "NOMBRE_GUILD", "ICON_CHANGE", "KICK", "WARN", "MUTE", "TEMP_BAN", "SOFT_BAN", "PERM_BAN", "ADD_EXP", "REMOVE_EXP", "SET_WELCOME", "OPEN_TICKET", "USERNAME_CHANGE", "USERNAME_ICON_CHANGE"};
     private static final GenericLoggingEvent[][] CLASES_EVENTOS = {
         {
             new RoleCreatedEvent(RoleCreateEvent.class),
             new RoleNameChangedEvent(RoleUpdateNameEvent.class),
-            new RolePermissionUpdateEvent(RoleUpdatePermissionsEvent.class)
+            new RolePermissionUpdateEvent(RoleUpdatePermissionsEvent.class),
+            new RoleDeletedEvent(RoleDeleteEvent.class)
+        },{
+            new MemberRoleAdded(GuildMemberRoleAddEvent.class),
+            new MemberRoleRemoved(GuildMemberRoleRemoveEvent.class)
+        },{
+            new GuildNameChangedEvent(GuildUpdateNameEvent.class)
+        },{
+            new GuildBannerChangeEvent(GuildUpdateBannerEvent.class)
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+
+        },{
+            new MemberNameChanged(GuildMemberUpdateNicknameEvent.class)
+        },{
+            new MemberAvatarChanged(GuildMemberUpdateAvatarEvent.class)
         }
     };
 
