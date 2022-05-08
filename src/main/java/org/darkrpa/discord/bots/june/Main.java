@@ -14,6 +14,7 @@ import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.events.AyudaMenuListener;
 import org.darkrpa.discord.bots.june.events.CommandListener;
 import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
+import org.darkrpa.discord.bots.june.events.LoggingListener;
 import org.darkrpa.discord.bots.june.events.NivelesListener;
 import org.darkrpa.discord.bots.june.events.TestCommandListener;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
@@ -56,7 +57,8 @@ public final class Main {
         CommandListener commandListener = new CommandListener(this.bot);
         AyudaMenuListener ayudaMenuListener = new AyudaMenuListener(this.bot);
         NivelesListener nivelesListener = new NivelesListener(this.bot);
-        this.bot.addEventListener(fRunEventListener, commandListener, ayudaMenuListener, nivelesListener);
+        LoggingListener loggingListener = new LoggingListener(this.bot);
+        this.bot.addEventListener(fRunEventListener, commandListener, ayudaMenuListener, nivelesListener, loggingListener);
 
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase

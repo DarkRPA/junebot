@@ -9,6 +9,7 @@ public class Logging extends ObjetoGuardable{
     private String idServidor;
     private int permisos;
     private String canalLogging;
+    private int habilitado;
 
     public Logging(String idServidor){
         this.idServidor = idServidor;
@@ -40,5 +41,18 @@ public class Logging extends ObjetoGuardable{
         this.canalLogging = canalLogging;
     }
 
+    @CampoGetter(nombreColumna = "habilitado")
+    public int getHabilitado() {
+        return habilitado;
+    }
 
+    @CampoSetter(nombreColumna = "habilitado")
+    public void setHabilitado(int habilitado) {
+        this.habilitado = habilitado;
+    }
+
+    //TODO Hacer la conversion de decimal a binario
+    public int getBinary(){
+        return 0;
+    }
 }

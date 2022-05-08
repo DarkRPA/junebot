@@ -41,31 +41,9 @@ public class ObjetoGuardable {
             //Heredados por Object
             //Este array de valores tendrá todo lo que necesitamos
             try {
-                Method metodoTabla = claseActual.getAnnotation(Guardable.class).annotationType().getMethod("nombreTabla");
-                String nombreTabla = (String)metodoTabla.invoke(claseActual.getAnnotation(Guardable.class));
-                ArrayList<HashMap<String, Object>> valoresGet = new ArrayList<>();
-
                 Method[] metodos = claseActual.getMethods();
-                for(int indexMetodo = 0; indexMetodo < metodos.length; indexMetodo++){
-                    //Como vamos a tener multiples bucles for anidados es mejor identificar bien los indexes
-                    Method metodo = metodos[indexMetodo];
-                    if(metodo.isAnnotationPresent(CampoGetter.class)){
-                        //Sabemos que es un metodo getter
-                        Annotation anotacion = metodo.getAnnotation(CampoGetter.class);
-                        //Tenemos la informacion que requerimos
-                        Class tipoAnotacion = anotacion.annotationType();
-                        HashMap<String, Object> valoresAnotacion = new HashMap<>();
-                        Method[] metodosAnotacion = tipoAnotacion.getMethods();
-                        for(int indexAnotacion = 0; indexAnotacion < metodosAnotacion.length-4; indexAnotacion++){
-                            Method metodoAnotacion = metodosAnotacion[indexAnotacion];
-                            valoresAnotacion.put(metodoAnotacion.getName(), metodoAnotacion.invoke(anotacion));
-                        }
-
-                        //Ya hemos ejecutado los metodos de la anotacion, ahora sacamos el valor del metodo en si
-                        valoresAnotacion.put("valor", metodo.invoke(this));
-                        valoresGet.add(valoresAnotacion);
-                    }
-                }
+                ArrayList<HashMap<String, Object>> valoresGet = this.getValores();
+                String nombreTabla = this.getNombreTabla();
 
                 //Tenemos todos los valores bien obtenidos :) Ahora podemos proseguir con el conseguir los datos, en base a las claves primarias
                 //que hemos obtenido vamos a hacer un get a la tabla
@@ -117,31 +95,8 @@ public class ObjetoGuardable {
             //Heredados por Object
             //Este array de valores tendrá todo lo que necesitamos
             try {
-                Method metodoTabla = claseActual.getAnnotation(Guardable.class).annotationType().getMethod("nombreTabla");
-                String nombreTabla = (String)metodoTabla.invoke(claseActual.getAnnotation(Guardable.class));
-                ArrayList<HashMap<String, Object>> valoresGet = new ArrayList<>();
-
-                Method[] metodos = claseActual.getMethods();
-                for(int indexMetodo = 0; indexMetodo < metodos.length; indexMetodo++){
-                    //Como vamos a tener multiples bucles for anidados es mejor identificar bien los indexes
-                    Method metodo = metodos[indexMetodo];
-                    if(metodo.isAnnotationPresent(CampoGetter.class)){
-                        //Sabemos que es un metodo getter
-                        Annotation anotacion = metodo.getAnnotation(CampoGetter.class);
-                        //Tenemos la informacion que requerimos
-                        Class tipoAnotacion = anotacion.annotationType();
-                        HashMap<String, Object> valoresAnotacion = new HashMap<>();
-                        Method[] metodosAnotacion = tipoAnotacion.getMethods();
-                        for(int indexAnotacion = 0; indexAnotacion < metodosAnotacion.length-4; indexAnotacion++){
-                            Method metodoAnotacion = metodosAnotacion[indexAnotacion];
-                            valoresAnotacion.put(metodoAnotacion.getName(), metodoAnotacion.invoke(anotacion));
-                        }
-
-                        //Ya hemos ejecutado los metodos de la anotacion, ahora sacamos el valor del metodo en si
-                        valoresAnotacion.put("valor", metodo.invoke(this));
-                        valoresGet.add(valoresAnotacion);
-                    }
-                }
+                String nombreTabla = this.getNombreTabla();
+                ArrayList<HashMap<String, Object>> valoresGet = this.getValores();
 
                 //Tenemos todos los valores bien obtenidos :) Ahora podemos proseguir con el conseguir los datos, en base a las claves primarias
                 //que hemos obtenido vamos a hacer un get a la tabla
@@ -234,38 +189,14 @@ public class ObjetoGuardable {
         Class claseActual = this.getClass();
 
         if(claseActual.isAnnotationPresent(Guardable.class)){
-
+            ArrayList<HashMap<String, Object>> valoresGet = this.getValores();
+            String nombreTabla = this.getNombreTabla();
+            Method[] metodos = claseActual.getMethods();
             //Sabemos que esta anotada, podemos empezar la mágia
             //Primero agarramos todos los métodos que pueda contener -4 que es la cantidad de métodos
             //Heredados por Object
             //Este array de valores tendrá todo lo que necesitamos
             try {
-                Method metodoTabla = claseActual.getAnnotation(Guardable.class).annotationType().getMethod("nombreTabla");
-                String nombreTabla = (String)metodoTabla.invoke(claseActual.getAnnotation(Guardable.class));
-                ArrayList<HashMap<String, Object>> valoresGet = new ArrayList<>();
-
-                Method[] metodos = claseActual.getMethods();
-                for(int indexMetodo = 0; indexMetodo < metodos.length; indexMetodo++){
-                    //Como vamos a tener multiples bucles for anidados es mejor identificar bien los indexes
-                    Method metodo = metodos[indexMetodo];
-                    if(metodo.isAnnotationPresent(CampoGetter.class)){
-                        //Sabemos que es un metodo getter
-                        Annotation anotacion = metodo.getAnnotation(CampoGetter.class);
-                        //Tenemos la informacion que requerimos
-                        Class tipoAnotacion = anotacion.annotationType();
-                        HashMap<String, Object> valoresAnotacion = new HashMap<>();
-                        Method[] metodosAnotacion = tipoAnotacion.getMethods();
-                        for(int indexAnotacion = 0; indexAnotacion < metodosAnotacion.length-4; indexAnotacion++){
-                            Method metodoAnotacion = metodosAnotacion[indexAnotacion];
-                            valoresAnotacion.put(metodoAnotacion.getName(), metodoAnotacion.invoke(anotacion));
-                        }
-
-                        //Ya hemos ejecutado los metodos de la anotacion, ahora sacamos el valor del metodo en si
-                        valoresAnotacion.put("valor", metodo.invoke(this));
-                        valoresGet.add(valoresAnotacion);
-                    }
-                }
-
                 //Tenemos todos los valores bien obtenidos :) Ahora podemos proseguir con el conseguir los datos, en base a las claves primarias
                 //que hemos obtenido vamos a hacer un get a la tabla
 
@@ -326,5 +257,53 @@ public class ObjetoGuardable {
         }else{
             this.guardado = false;
         }
+    }
+
+    private ArrayList<HashMap<String, Object>> getValores(){
+        ArrayList<HashMap<String, Object>> valoresGet = new ArrayList<>();
+        try {
+            Class claseActual = this.getClass();
+            Method metodoTabla = claseActual.getAnnotation(Guardable.class).annotationType().getMethod("nombreTabla");
+            String nombreTabla = (String)metodoTabla.invoke(claseActual.getAnnotation(Guardable.class));
+
+            Method[] metodos = claseActual.getMethods();
+            for(int indexMetodo = 0; indexMetodo < metodos.length; indexMetodo++){
+                //Como vamos a tener multiples bucles for anidados es mejor identificar bien los indexes
+                Method metodo = metodos[indexMetodo];
+                if(metodo.isAnnotationPresent(CampoGetter.class)){
+                    //Sabemos que es un metodo getter
+                    Annotation anotacion = metodo.getAnnotation(CampoGetter.class);
+                    //Tenemos la informacion que requerimos
+                    Class tipoAnotacion = anotacion.annotationType();
+                    HashMap<String, Object> valoresAnotacion = new HashMap<>();
+                    Method[] metodosAnotacion = tipoAnotacion.getMethods();
+                    for(int indexAnotacion = 0; indexAnotacion < metodosAnotacion.length-4; indexAnotacion++){
+                        Method metodoAnotacion = metodosAnotacion[indexAnotacion];
+                        valoresAnotacion.put(metodoAnotacion.getName(), metodoAnotacion.invoke(anotacion));
+                    }
+
+                    //Ya hemos ejecutado los metodos de la anotacion, ahora sacamos el valor del metodo en si
+                    valoresAnotacion.put("valor", metodo.invoke(this));
+                    valoresGet.add(valoresAnotacion);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return valoresGet;
+    }
+
+    private String getNombreTabla(){
+        String resultado = "";
+        try {
+            Class claseActual = this.getClass();
+            Method metodoTabla = claseActual.getAnnotation(Guardable.class).annotationType().getMethod("nombreTabla");
+            String nombreTabla = (String)metodoTabla.invoke(claseActual.getAnnotation(Guardable.class));
+            resultado = nombreTabla;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultado;
     }
 }

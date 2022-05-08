@@ -25,13 +25,10 @@ public class Testing {
 
         Servidor servidor = new Servidor("djah");
 
-        Logging log = new Logging("djah");
-        log.setPermisos(1);
-        log.actualizar();
+        UserNivel userNivel = new UserNivel("311242525598023691", "880403638072262677");
+
+
         System.out.println();
-
-
-        //System.out.println();
 
     }
 }
