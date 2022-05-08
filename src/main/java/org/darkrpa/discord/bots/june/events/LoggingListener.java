@@ -1,7 +1,9 @@
 package org.darkrpa.discord.bots.june.events;
 
 import org.darkrpa.discord.bots.june.logging.clases.GenericLoggingEvent;
-import org.darkrpa.discord.bots.june.logging.clases.RoleCreatedEvent;
+import org.darkrpa.discord.bots.june.logging.clases.roles.RoleCreatedEvent;
+import org.darkrpa.discord.bots.june.logging.clases.roles.RoleNameChangedEvent;
+import org.darkrpa.discord.bots.june.logging.clases.roles.RolePermissionUpdateEvent;
 import org.darkrpa.discord.bots.june.model.Logging;
 
 import net.dv8tion.jda.api.JDA;
@@ -13,6 +15,8 @@ import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.role.GenericRoleEvent;
 import net.dv8tion.jda.api.events.role.RoleCreateEvent;
 import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdateNameEvent;
+import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
 
 /**
  * Clase LoggingListener, esta clase va a ser la que se va a encargar de poder registrar todos los eventos
@@ -25,7 +29,11 @@ public class LoggingListener extends AbstractEventListener{
 
     public static final String[] EVENTOS_LOGGING = {"ROL", "ASIG_ROL", "CHAT", "NOMBRE_GUILD", "ICON_CHANGE", "KICK", "WARN", "MUTE", "TEMP_BAN", "SOFT_BAN", "PERM_BAN", "ADD_EXP", "REMOVE_EXP", "SET_WELCOME", "OPEN_TICKET"};
     private static final GenericLoggingEvent[][] CLASES_EVENTOS = {
-        {new RoleCreatedEvent("Test", RoleCreateEvent.class)}
+        {
+            new RoleCreatedEvent(RoleCreateEvent.class),
+            new RoleNameChangedEvent(RoleUpdateNameEvent.class),
+            new RolePermissionUpdateEvent(RoleUpdatePermissionsEvent.class)
+        }
     };
 
     public LoggingListener(JDA bot) {

@@ -1,6 +1,7 @@
 package org.darkrpa.discord.bots.june.utils;
 
 import java.awt.Color;
+import java.time.LocalDateTime;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.EnvOption;
@@ -76,6 +77,27 @@ public class EmbedCreator {
     public MessageEmbed build(){
         this.embedBuilt = this.builder.build();
         return this.embedBuilt;
+    }
+
+    public static EmbedCreator generateLogTemplate(){
+        EnvOption red, green, blue, botName, botVersion;
+
+        red = Main.getOption(EnvOption.EMBED_COLOR_RED);
+        green = Main.getOption(EnvOption.EMBED_COLOR_GREEN);
+        blue = Main.getOption(EnvOption.EMBED_COLOR_BLUE);
+
+        botName = Main.getOption(EnvOption.BOT_NAME);
+        botVersion = Main.getOption(EnvOption.BOT_VERSION);
+
+        //Tenemos las variables de entorno, podemos proseguir
+
+        EmbedCreator creator = new EmbedCreator();
+
+        creator.title("Mensaje de log");
+        creator.description("`"+LocalDateTime.now()+"`");
+        creator.setColor(Integer.parseInt(red.getValor()), Integer.parseInt(green.getValor()), Integer.parseInt(blue.getValor()));
+        creator.footer(String.format("%s - v%s", botName.getValor(), botVersion.getValor()));
+        return creator;
     }
 
     public static EmbedCreator generateDefaultTemplate(){
