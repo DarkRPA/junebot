@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import javax.security.auth.login.LoginException;
@@ -23,6 +24,7 @@ import org.darkrpa.discord.bots.june.thread.TimerVerifier;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 /**
@@ -47,7 +49,14 @@ public final class Main {
     private JDA bot;
 
     private Main() throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
-        JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor()).enableIntents(GatewayIntent.GUILD_MEMBERS);
+        Main.controlador = new MySQLController();
+
+        //Vamos a poner en la descripcion del bot la cantidad de miembros que tiene escuchando ahora mismo
+
+        //Cantidad de servidores
+        HashMap<String, Object> servidoresMiembros = Main.controlador.get("SELECT COUNT(*) as servidores, SUM(cantUsuarios) as usuarios FROM servidor").get(0);
+        String resultado = String.format("Atendiendo a %s miembros en %s servidores || !ayuda", servidoresMiembros.get("usuarios"), servidoresMiembros.get("servidores"));
+        JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor()).enableIntents(GatewayIntent.GUILD_MEMBERS).setActivity(Activity.playing(resultado));
         this.bot = consBuilder.build();
         //Esperamos a que el bot cargue correctamente
         this.bot.awaitReady();
@@ -62,7 +71,7 @@ public final class Main {
 
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase
-        Main.controlador = new MySQLController();
+
 
     }
 

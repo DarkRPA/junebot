@@ -51,8 +51,19 @@ public class Logging extends ObjetoGuardable{
         this.habilitado = habilitado;
     }
 
-    //TODO Hacer la conversion de decimal a binario
-    public int getBinary(){
-        return 0;
+    public long getBinary(){
+        int cosciente = this.permisos;
+        String resultado = "";
+
+        while(cosciente > 0){
+            resultado += cosciente % 2;
+            cosciente /= 2;
+        }
+        String resultadoFinal = "";
+        for(int i = resultado.length() - 1; i >= 0; i--){
+            resultadoFinal += resultado.charAt(i);
+        }
+
+        return Long.parseLong(resultadoFinal);
     }
 }

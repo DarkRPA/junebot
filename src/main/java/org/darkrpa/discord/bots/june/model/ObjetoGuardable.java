@@ -26,6 +26,8 @@ public class ObjetoGuardable {
         this.controller = Main.getMySQLController();
     }
 
+    //TODO Revisar documentacion
+
     /**
      * Metodo eliminar, este metodo va a ser el encargado de eliminar la instancia del objeto de la base de datos
      * cada clase especificara el funcionamiento para eliminar su objeto

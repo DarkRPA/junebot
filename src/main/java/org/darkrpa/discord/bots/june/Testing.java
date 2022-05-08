@@ -24,10 +24,10 @@ public class Testing {
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
         Servidor servidor = new Servidor("djah");
-
-        UserNivel userNivel = new UserNivel("311242525598023691", "880403638072262677");
-
-
+        Logging logging = new Logging("djah");
+        logging.setPermisos(35);
+        //UserNivel userNivel = new UserNivel("311242525598023691", "880403638072262677");
+        Long binario = logging.getBinary();
         System.out.println();
 
     }
