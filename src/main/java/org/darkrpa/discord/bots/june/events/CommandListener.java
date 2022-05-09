@@ -33,6 +33,7 @@ public class CommandListener extends AbstractEventListener {
     {
         this.COMMAND_CLASS_MAP.put("ayuda", Ayuda.class);
         this.COMMAND_CLASS_MAP.put("nivel", Nivel.class);
+
     }
 
     public CommandListener(JDA bot) {
