@@ -9,6 +9,8 @@ public class Servidor extends ObjetoGuardable{
     private String idServidor;
     private int cantUsuarios;
     private String idCanalBienvenida = "";
+    private String idCanalTickets = "";
+    private int ticketsHabilitado = 0;
 
     public Servidor(String idServidor){
         //Con este constructor lo que vamos a tener en cuenta es que quiere obtener la instancia directamente
@@ -49,4 +51,23 @@ public class Servidor extends ObjetoGuardable{
     public void setIdCanalBienvenida(String idCanalBienvenida) {
         this.idCanalBienvenida = idCanalBienvenida;
     }
+
+    @CampoGetter(nombreColumna = "idCanalTickets")
+    public String getIdCanalTickets() {
+        return idCanalTickets;
+    }
+    @CampoSetter(nombreColumna = "idCanalTickets")
+    public void setIdCanalTickets(String idCanalTickets) {
+        this.idCanalTickets = idCanalTickets;
+    }
+    @CampoGetter(nombreColumna = "ticketsHabilitado")
+    public int getTicketsHabilitado() {
+        return ticketsHabilitado;
+    }
+    @CampoSetter(nombreColumna = "ticketsHabilitado")
+    public void setTicketsHabilitado(int ticketsHabilitado) {
+        this.ticketsHabilitado = ticketsHabilitado;
+    }
+
+
 }

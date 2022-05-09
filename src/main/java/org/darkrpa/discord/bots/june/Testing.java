@@ -2,12 +2,14 @@ package org.darkrpa.discord.bots.june;
 
 import java.awt.Font;
 import java.io.File;
+import java.time.Instant;
 
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.model.Logging;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.StaffRol;
+import org.darkrpa.discord.bots.june.model.Ticket;
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
@@ -23,11 +25,12 @@ public class Testing {
 
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
-        Servidor servidor = new Servidor("djah");
-        Logging logging = new Logging("djah");
-        logging.setPermisos(35);
-        //UserNivel userNivel = new UserNivel("311242525598023691", "880403638072262677");
-        Long binario = logging.getBinary();
+        Ticket ticket = new Ticket(Instant.now().toEpochMilli()+"");
+        ticket.setIdChat("un chat");
+        ticket.setIdUsuarioAbrioTicket("1234");
+        ticket.setIdServidor("djah");
+        ticket.setFechaCreacion(Instant.now().toEpochMilli());
+        ticket.actualizar();
         System.out.println();
 
     }

@@ -115,11 +115,12 @@ public class ObjetoGuardable {
 
                         for(int i = 0; i < valoresGet.size(); i++){
                             HashMap<String, Object> valoresFinales = valoresGet.get(i);
+                            Object valor = valoresFinales.get("valor")==null?"null":"'"+valoresFinales.get("valor")+"'";
                             if(i == 0){
                                 //Es el primero
-                                query += valoresFinales.get("nombreColumna")+" = '"+valoresFinales.get("valor")+"'";
+                                query += valoresFinales.get("nombreColumna")+" = "+valor;
                             }else{
-                                query += ", "+valoresFinales.get("nombreColumna")+" = '"+valoresFinales.get("valor")+"'";
+                                query += ", "+valoresFinales.get("nombreColumna")+" = "+valor;
                             }
                         }
 
@@ -139,18 +140,19 @@ public class ObjetoGuardable {
                         String valores = "(";
                         for(int i = 0; i < valoresGet.size(); i++){
                             HashMap<String, Object> valoresFinales = valoresGet.get(i);
+                            Object valor = valoresFinales.get("valor")==null?"null":"'"+valoresFinales.get("valor")+"'";
                             if(i == 0){
                                 //Es el primero
                                 columnas += valoresFinales.get("nombreColumna");
-                                valores += "'"+valoresFinales.get("valor")+"'";
+                                valores += valor;
                             }else if(i + 1 >= valoresGet.size()){
                                 //Es el ultimo
                                 columnas +=", "+valoresFinales.get("nombreColumna")+")";
-                                valores +=", '"+valoresFinales.get("valor")+"')";
+                                valores +=", "+valor+")";
                             }else{
                                 //Es uno del medio
                                 columnas +=", "+valoresFinales.get("nombreColumna");
-                                valores +=", '"+valoresFinales.get("valor")+"'";
+                                valores +=", "+valor;
                             }
                         }
 
