@@ -1,10 +1,11 @@
-package org.darkrpa.discord.bots.june.comandos;
+package org.darkrpa.discord.bots.june.comandos.ticket;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.Ticket;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;

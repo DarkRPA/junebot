@@ -1,7 +1,8 @@
-package org.darkrpa.discord.bots.june.comandos;
+package org.darkrpa.discord.bots.june.comandos.nivel;
 
 import java.util.regex.Matcher;
 
+import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
