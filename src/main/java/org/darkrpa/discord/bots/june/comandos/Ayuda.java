@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
 import org.darkrpa.discord.bots.june.Main;
@@ -33,8 +34,8 @@ public class Ayuda extends Comando{
     //Para no tener que interpretar la ayuda cada vez que se ejecute el comando ayuda vamos a almacenarla de forma
     //estatica, asi todas las ayudas accederan al mismo array
 
-    public Ayuda(String nombre) {
-        super(nombre);
+    public Ayuda(String nombre, Matcher matcher) {
+        super(nombre, matcher);
     }
 
     private static ArrayList<HelpCategory> categories;

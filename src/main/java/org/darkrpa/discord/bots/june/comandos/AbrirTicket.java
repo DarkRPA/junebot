@@ -1,9 +1,13 @@
 package org.darkrpa.discord.bots.june.comandos;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.regex.Matcher;
 
+import org.darkrpa.discord.bots.june.model.RolTicket;
 import org.darkrpa.discord.bots.june.model.Servidor;
+import org.darkrpa.discord.bots.june.model.Ticket;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.Permission;
@@ -15,6 +19,8 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.requests.restaction.ChannelAction;
+import net.dv8tion.jda.api.requests.restaction.MessageAction;
 
 /**
  * Clase encargada de añadir la funcionalidad para poder abrir un ticket nuevo, en este caso
@@ -22,8 +28,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 public class AbrirTicket extends Comando{
 
-    public AbrirTicket(String nombre) {
-        super(nombre);
+    public AbrirTicket(String nombre, Matcher matcher) {
+        super(nombre, matcher);
     }
 
     @Override
@@ -43,11 +49,46 @@ public class AbrirTicket extends Comando{
                     Category category = canal.getParentCategory();
                     long actual = Instant.now().toEpochMilli();
                     String nombreCanalTicket = "ticket-"+actual;
-                    category.createTextChannel(nombreCanalTicket).addPermissionOverride(rolEveryone, null, EnumSet.of(Permission.VIEW_CHANNEL)).queue(e->{
-                        //Se ha creado el canal, debemos de poner toda la información necesaria para que los administradores
-                        //lo sepan
-                        TextChannel canalCreado = e;
-                        //TODO Proseguir con la asignacion de los permisos
+                    //Vamos a conseguir todos los roles que pueden acceder a este ticket
+                    ArrayList<RolTicket> roles = RolTicket.getRolsEnServer(servidor.getIdServidor());
+                    ChannelAction<TextChannel> accionCreacionCanal = category.createTextChannel(nombreCanalTicket);
+                    for(RolTicket rol : roles){
+                        //Buscamos el rol
+                        Role rolEnServidor = guild.getRoleById(rol.getIdRol());
+                        if(rolEnServidor != null){
+                            //Esta
+                            accionCreacionCanal.addPermissionOverride(rolEnServidor, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null);
+                        }
+                    }
+
+                    //Finalmente damos acceso a quien ha solicitado el ticket
+                    accionCreacionCanal.addPermissionOverride(miembro, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND), null);
+                    accionCreacionCanal.addPermissionOverride(rolEveryone, null, EnumSet.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_SEND));
+
+                    accionCreacionCanal.queue(e->{
+                        EmbedCreator creator = EmbedCreator.generateDefaultTemplate();
+                        creator.description("Se ha abierto el "+e.getAsMention()+" los administradores contactaran los más rápido posible");
+                        evento.getMessage().replyEmbeds(creator.build()).queue();
+
+                        //Vamos a coger la razon del matcher
+
+                        String razonApertura = super.matcher.group(6);
+                        if(razonApertura != null && !razonApertura.isBlank()){
+                            //Tenemos la razon por la que la podemos podemos enviar al nuevo canal para dar contexto
+                            EmbedCreator embedCreator = EmbedCreator.generateDefaultTemplate();
+                            embedCreator.title(miembro.getEffectiveName()).description("*"+razonApertura.trim()+"*").thumbnail(miembro.getEffectiveAvatarUrl());
+                            MessageAction actionMensaje = e.sendMessageEmbeds(embedCreator.build());
+                            actionMensaje.queue();
+                        }
+
+                        //Ahora debemos de hacer el ticket en la base de datos
+                        Ticket ticket = new Ticket(String.valueOf(actual));
+                        ticket.setIdUsuarioAbrioTicket(miembro.getId());
+                        ticket.setIdServidor(servidor.getIdServidor());
+                        ticket.setIdChat(e.getId());
+                        ticket.setFechaCreacion(actual);
+                        ticket.setCausaApertura((razonApertura.isBlank())?"no-especificada":razonApertura);
+                        ticket.actualizar();
                     });
                 }
             }else{

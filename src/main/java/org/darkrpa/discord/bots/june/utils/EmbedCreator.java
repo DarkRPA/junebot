@@ -36,6 +36,11 @@ public class EmbedCreator {
         return this;
     }
 
+    public EmbedCreator author(String autor, String imgUrl){
+        this.builder.setAuthor(autor, imgUrl);
+        return this;
+    }
+
     public EmbedCreator addField(String nombre, String texto){
         return this.addField(nombre, texto, false);
     }

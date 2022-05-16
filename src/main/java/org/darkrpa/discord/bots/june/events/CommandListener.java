@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.darkrpa.discord.bots.june.comandos.AbrirTicket;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.comandos.Nivel;
@@ -26,13 +27,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * y se ejecutará su metodo ejecutar()
  */
 public class CommandListener extends AbstractEventListener {
-    public static String COMMAND_REGEX = "^!([a-z]*)(( <[!@&a-z1-9]*>)+( \\d+[mdsMA]{1})?( [a-z1-9 ]*)?)?([a-z ]*)";
+    public static String COMMAND_REGEX = "^!([a-zA-Z]*)(( <[!@&a-zA-Z1-9]*>)+( \\d+[mdsMA]{1})?( [a-zA-Z1-9¿?¡!*+-\\/ñáóéíú():;,.\\[\\]<> ]*)?)?([a-zA-Z¿?¡!*+-\\/ñáóéíú1-9():;,.\\[\\]<> ]*)";
     private final HashMap<String, Class> COMMAND_CLASS_MAP = new HashMap<>();
 
 
     {
         this.COMMAND_CLASS_MAP.put("ayuda", Ayuda.class);
         this.COMMAND_CLASS_MAP.put("nivel", Nivel.class);
+        this.COMMAND_CLASS_MAP.put("abrirTicket", AbrirTicket.class);
 
     }
 
@@ -68,7 +70,7 @@ public class CommandListener extends AbstractEventListener {
                 Set<String> entries = this.COMMAND_CLASS_MAP.keySet();
 
                 for(String key : entries){
-                    if(key.equals(comando)){
+                    if(key.equalsIgnoreCase(comando)){
                         claseComando = this.COMMAND_CLASS_MAP.get(key);
                         nombreComando = key;
                         break;
@@ -83,7 +85,7 @@ public class CommandListener extends AbstractEventListener {
                 //Instanciamos la clase
 
                 try {
-                    Comando comandoReal = (Comando) claseComando.getConstructors()[0].newInstance(nombreComando);
+                    Comando comandoReal = (Comando) claseComando.getConstructors()[0].newInstance(nombreComando, matcher);
                     //Verificamos que puede ejecutar el comando
 
                     if(comandoReal.puedeEjecutar(servidor, miembro)){

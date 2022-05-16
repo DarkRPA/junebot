@@ -3,6 +3,7 @@ package org.darkrpa.discord.bots.june.comandos;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
@@ -15,10 +16,13 @@ import net.dv8tion.jda.api.events.GenericEvent;
 
 public abstract class Comando {
     private String nombreComando;
+    protected Matcher matcher;
+
     public abstract void ejecutar(GenericEvent evento);
 
-    public Comando(String nombre){
+    public Comando(String nombre, Matcher matcher){
         this.nombreComando = nombre;
+        this.matcher = matcher;
     }
 
     public String getCommandName(){

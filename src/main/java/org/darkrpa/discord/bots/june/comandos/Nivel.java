@@ -1,5 +1,7 @@
 package org.darkrpa.discord.bots.june.comandos;
 
+import java.util.regex.Matcher;
+
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
@@ -8,8 +10,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class Nivel extends Comando{
 
-    public Nivel(String nombre) {
-        super(nombre);
+    public Nivel(String nombre, Matcher matcher) {
+        super(nombre, matcher);
     }
 
     @Override

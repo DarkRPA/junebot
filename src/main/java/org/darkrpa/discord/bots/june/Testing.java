@@ -7,6 +7,7 @@ import java.time.Instant;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.model.Logging;
+import org.darkrpa.discord.bots.june.model.RolTicket;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.StaffRol;
 import org.darkrpa.discord.bots.june.model.Ticket;
@@ -25,12 +26,8 @@ public class Testing {
 
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
-        Ticket ticket = new Ticket(Instant.now().toEpochMilli()+"");
-        ticket.setIdChat("un chat");
-        ticket.setIdUsuarioAbrioTicket("1234");
-        ticket.setIdServidor("djah");
-        ticket.setFechaCreacion(Instant.now().toEpochMilli());
-        ticket.actualizar();
+        RolTicket.getRolsEnServer("djah");
+
         System.out.println();
 
     }
