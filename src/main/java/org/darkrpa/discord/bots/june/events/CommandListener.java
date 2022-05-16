@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.comandos.AbrirTicket;
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
+import org.darkrpa.discord.bots.june.comandos.CerrarTicket;
 import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.comandos.Nivel;
 import org.darkrpa.discord.bots.june.model.Usuario;
@@ -35,6 +36,7 @@ public class CommandListener extends AbstractEventListener {
         this.COMMAND_CLASS_MAP.put("ayuda", Ayuda.class);
         this.COMMAND_CLASS_MAP.put("nivel", Nivel.class);
         this.COMMAND_CLASS_MAP.put("abrirTicket", AbrirTicket.class);
+        this.COMMAND_CLASS_MAP.put("cerrarTicket", CerrarTicket.class);
 
     }
 

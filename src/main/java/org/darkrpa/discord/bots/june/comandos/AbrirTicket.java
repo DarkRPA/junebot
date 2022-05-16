@@ -82,7 +82,7 @@ public class AbrirTicket extends Comando{
                         }
 
                         //Ahora debemos de hacer el ticket en la base de datos
-                        Ticket ticket = new Ticket(String.valueOf(actual));
+                        Ticket ticket = new Ticket(actual);
                         ticket.setIdUsuarioAbrioTicket(miembro.getId());
                         ticket.setIdServidor(servidor.getIdServidor());
                         ticket.setIdChat(e.getId());

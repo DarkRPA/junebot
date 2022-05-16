@@ -26,7 +26,7 @@ public class Testing {
 
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
-        RolTicket.getRolsEnServer("djah");
+        Ticket ticket = new Ticket(1652714783011L);
 
         System.out.println();
 

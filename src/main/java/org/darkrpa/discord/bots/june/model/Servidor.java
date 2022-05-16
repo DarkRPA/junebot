@@ -11,6 +11,7 @@ public class Servidor extends ObjetoGuardable{
     private String idCanalBienvenida = "";
     private String idCanalTickets = "";
     private int ticketsHabilitado = 0;
+    private int eliminarTicketsCerrados = 0;
 
     public Servidor(String idServidor){
         //Con este constructor lo que vamos a tener en cuenta es que quiere obtener la instancia directamente
@@ -32,6 +33,14 @@ public class Servidor extends ObjetoGuardable{
     @CampoSetter(nombreColumna = "idServidor")
     public void setIdServidor(String idServidor) {
         this.idServidor = idServidor;
+    }
+    @CampoGetter(nombreColumna = "eliminarTicketsCerrados")
+    public int getEliminarTicketsCerrados() {
+        return eliminarTicketsCerrados;
+    }
+    @CampoSetter(nombreColumna = "eliminarTicketsCerrados")
+    public void setEliminarTicketsCerrados(int eliminarTicketsCerrados) {
+        this.eliminarTicketsCerrados = eliminarTicketsCerrados;
     }
 
     @CampoGetter(nombreColumna = "cantUsuarios")

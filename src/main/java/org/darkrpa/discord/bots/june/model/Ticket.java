@@ -7,7 +7,7 @@ import org.darkrpa.discord.bots.june.anotaciones.Guardable;
 @Guardable(nombreTabla = "tickets")
 public class Ticket extends ObjetoGuardable{
     public static final String CERRADO="CERRADO", ABIERTO="ABIERTO";
-    private String idTicket;
+    private long idTicket;
     private String idUsuarioAbrioTicket;
     private String idUsuarioCerroTicket;
     private String idServidor;
@@ -18,16 +18,17 @@ public class Ticket extends ObjetoGuardable{
     private String causaApertura;
     private String resolucion;
 
-    public Ticket(String idTicket) {
+    public Ticket(long idTicket) {
         this.idTicket = idTicket;
+        this.get();
     }
 
     @CampoGetter(nombreColumna = "idTicket", isPrimary = true)
-    public String getIdTicket() {
+    public long getIdTicket() {
         return idTicket;
     }
     @CampoSetter(nombreColumna = "idTicket")
-    public void setIdTicket(String idTicket) {
+    public void setIdTicket(long idTicket) {
         this.idTicket = idTicket;
     }
     @CampoGetter(nombreColumna = "idUsuarioAbrioTicket")
