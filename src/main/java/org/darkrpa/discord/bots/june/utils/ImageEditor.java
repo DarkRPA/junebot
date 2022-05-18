@@ -2,6 +2,8 @@ package org.darkrpa.discord.bots.june.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.StringTokenizer;
 
@@ -18,6 +20,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 
@@ -35,8 +38,8 @@ public class ImageEditor {
 
     public static final int AVATAR_X = 58;
     public static final int AVATAR_Y = 64;
-    public static final int PROGRESS_X = 245;
-    public static final int PROGRESS_Y = 165;
+    public static final int PROGRESS_X = 261;
+    public static final int PROGRESS_Y = 163;
 
     public static final int NAME_X = 269;
     public static final int NAME_Y = 96;
@@ -118,15 +121,58 @@ public class ImageEditor {
 
 
     public static ImageEditor generateDefaultNivelTemplate(UserNivel userNivel, User usuario){
-        ImageEditor editor = new ImageEditor(new File("images/levels/PrimeraCapaNivelV2.png"));
+        //ImageEditor editor = new ImageEditor(new File("images/levels/PrimeraCapaNivelV2Default.png"));
+        //Debemos de saber si tiene una imagen de nivel establecida, sino le ponemos la imagen común predeterminada
+
+        File imagenElegida = null;
+        boolean desdeRed = false;
+        if(userNivel.getTarjetaNivel().equals("default")){
+            //No tiene imagen predeterminada
+            imagenElegida = new File("images/levels/PrimeraCapaNivelV2Default.png");
+        }else{
+            //Si tenemos la imagen, la vamos a guardar de forma temporal solo para enviarla y luego la eliminamos
+            //Asumimos que lo que está guardado en la tarejetaNivel es la URL a la imagen
+            try {
+                URL urlImagen = new URL(userNivel.getTarjetaNivel());
+                //Vamos a abrir el stream y vamos a guardar el archivo, teoricamente todas las imagenes son recortadas para
+                //caber bien en el marco, 950x256
+                BufferedImage imagenBuffered = ImageIO.read(urlImagen);
+                imagenElegida = File.createTempFile("june_", "png");
+                ImageIO.write(imagenBuffered, "png", imagenElegida);
+                desdeRed = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                imagenElegida = new File("images/levels/PrimeraCapaNivelV2Default.png");
+            }
+        }
+
+        ImageEditor editor = new ImageEditor(imagenElegida);
+
         try {
             editor.setDefaultColor();
-            BufferedImage avatar = ImageIO.read(new URL(usuario.getAvatarUrl()+"?size=128"));
-            //Tenemos el avatar por lo que podemos seguir
-            BufferedImage imagenFinal = ImageIO.read(new File("images/levels/PrimeraCapaNivelV2.png"));
+            BufferedImage avatarObtenido = ImageIO.read(new URL(usuario.getAvatarUrl()+"?size=128"));
+            //Tenemos el avatar por lo que podemos seguir, aun asi vamos a intentar recortar el avatar para que sea totalmente
+            //redondo y no cuadrado
+
+
+            BufferedImage avatar = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graficosAvatar = avatar.createGraphics();
+            graficosAvatar.setClip(new Ellipse2D.Float(0, 0, 128, 128));
+            graficosAvatar.drawImage(avatarObtenido, 0, 0, 128, 128, null);
+
+
+            File imagenFinalFichero = null;
+
+            if(desdeRed){
+                //Es una imagen de la red
+                imagenFinalFichero = new File("images/levels/CapaFinal_Trasparente.png");
+            }else{
+                //no es una imagen de la red por lo que ponemos la predeterminada
+                imagenFinalFichero = new File("images/levels/PrimeraCapaNivelV2Default.png");
+            }
+
+            BufferedImage imagenFinal = ImageIO.read(imagenFinalFichero);
             editor.drawImage(avatar, ImageEditor.AVATAR_X, ImageEditor.AVATAR_Y);
-
-
 
             //Porcentaje
             int mensajes = userNivel.getMensajes();
@@ -165,6 +211,9 @@ public class ImageEditor {
             editor.addText("Lvl. "+nivel, ImageEditor.LVL_X, ImageEditor.LVL_Y);
             editor.addText(userNivel.getMensajes() + " / "+userNivel.getExpToNextLvl()+" EXP", ImageEditor.EXP_X, ImageEditor.EXP_Y);
 
+            //Una vez subidas las borramos
+
+            imagenElegida.delete();
 
         } catch (IOException e) {
             e.printStackTrace();

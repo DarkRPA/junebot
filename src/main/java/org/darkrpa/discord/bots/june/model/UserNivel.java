@@ -14,7 +14,7 @@ public class UserNivel extends ObjetoGuardable{
     private String idUsuario;
     private String idServidor;
     private int mensajes;
-    private String tarjetaNivel;
+    private String tarjetaNivel = "default";
 
     public UserNivel(String idUsuario, String idServidor){
         this.idServidor = idServidor;

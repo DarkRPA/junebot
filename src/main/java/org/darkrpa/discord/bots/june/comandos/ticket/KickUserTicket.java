@@ -4,10 +4,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.comandos.Comando;
-import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.PermissionOverride;
 import net.dv8tion.jda.api.entities.TextChannel;
