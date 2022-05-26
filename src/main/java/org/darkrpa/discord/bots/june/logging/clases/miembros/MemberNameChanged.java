@@ -17,8 +17,8 @@ public class MemberNameChanged extends GenericLoggingEvent{
         EmbedCreator embedCreator = EmbedCreator.generateLogTemplate();
         embedCreator.addField("Tipo", "`MemberChangedNameEvent`");
         embedCreator.addField("Descripción", "El usuario "+event.getMember().getAsMention()+" se ha cambiado de apodo");
-        embedCreator.addField("Nuevo", event.getNewNickname(), true);
-        embedCreator.addField("Antiguo", event.getOldNickname(), true);
+        embedCreator.addField("Nuevo", (event.getNewNickname() == null)?event.getUser().getName():event.getNewNickname(), true);
+        embedCreator.addField("Antiguo", (event.getOldNickname() == null)?event.getUser().getName():event.getOldNickname(), true);
         embedCreator.thumbnail(event.getUser().getAvatarUrl());
         return embedCreator;
     }
