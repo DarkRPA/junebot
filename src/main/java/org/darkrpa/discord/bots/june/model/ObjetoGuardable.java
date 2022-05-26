@@ -298,6 +298,10 @@ public class ObjetoGuardable {
         return valoresGet;
     }
 
+    public boolean isGuardado(){
+        return this.guardado;
+    }
+
     private String getNombreTabla(){
         String resultado = "";
         try {

@@ -1,6 +1,7 @@
 package org.darkrpa.discord.bots.june.events;
 
 import org.darkrpa.discord.bots.june.model.UserNivel;
+import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
@@ -33,6 +34,13 @@ public class NivelesListener extends AbstractEventListener{
                 if(!eventoReal.getAuthor().isBot()){
                     String idUsuario = eventoReal.getAuthor().getId();
                     String idServidor = eventoReal.getGuild().getId();
+
+                    Usuario usuario = new Usuario(idUsuario);
+                    if(!usuario.isGuardado()){
+                        //no esta guardado por lo que debemos de crear el usuario
+                        usuario.setNombreUsuario(eventoReal.getAuthor().getName());
+                    }
+                    usuario.actualizar();
 
                     UserNivel nivelUsuario = new UserNivel(idUsuario, idServidor);
 
