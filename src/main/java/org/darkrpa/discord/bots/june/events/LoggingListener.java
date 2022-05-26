@@ -112,7 +112,8 @@ public class LoggingListener extends AbstractEventListener{
                 //Debemos de recorrer el array de opciones y en caso de que sea 1 entonces registrar el evento
                 for(int i = binario.length() - 1; i >= 0; i--){
                     //Tenemos que invertir el binario
-                    String posicion = String.valueOf(binario.charAt(i));
+                    int indexReal = (binario.length()-1)-i;
+                    String posicion = String.valueOf(binario.charAt(indexReal));
                     boolean habilitado = posicion.equals("1");
                     if(habilitado){
                         GenericLoggingEvent[] clasesHabilitadas = LoggingListener.CLASES_EVENTOS[i];

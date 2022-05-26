@@ -66,4 +66,16 @@ public class Logging extends ObjetoGuardable{
 
         return Long.parseLong(resultadoFinal);
     }
+
+    public long getBinaryInverse(){
+        int cosciente = this.permisos;
+        String resultado = "";
+
+        while(cosciente > 0){
+            resultado += cosciente % 2;
+            cosciente /= 2;
+        }
+
+        return Long.parseLong(resultado);
+    }
 }
