@@ -213,7 +213,11 @@ public class ImageEditor {
 
             //Una vez subidas las borramos
 
-            imagenElegida.delete();
+            if(desdeRed){
+                //Eliminamos solo cuando proviene de la red
+                imagenElegida.delete();
+            }
+
 
         } catch (IOException e) {
             e.printStackTrace();
