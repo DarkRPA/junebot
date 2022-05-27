@@ -27,6 +27,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 /**
  * Hello world!
@@ -58,6 +59,7 @@ public final class Main {
         HashMap<String, Object> servidoresMiembros = Main.controlador.get("SELECT COUNT(*) as servidores, SUM(cantUsuarios) as usuarios FROM servidor").get(0);
         String resultado = String.format("Atendiendo a %s miembros en %s servidores || !ayuda", servidoresMiembros.get("usuarios"), servidoresMiembros.get("servidores"));
         JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor()).enableIntents(GatewayIntent.GUILD_MEMBERS).setActivity(Activity.playing(resultado));
+        consBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         this.bot = consBuilder.build();
         //Esperamos a que el bot cargue correctamente
         this.bot.awaitReady();
