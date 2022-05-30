@@ -13,6 +13,7 @@ import org.darkrpa.discord.bots.june.model.StaffRol;
 import org.darkrpa.discord.bots.june.model.Ticket;
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.model.Usuario;
+import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
 public class Testing {
@@ -26,7 +27,14 @@ public class Testing {
 
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
-        Ticket ticket = new Ticket(1652714783011L);
+        Sancion sancion = new Sancion("123", "1234");
+
+        sancion.setFechaEvento(1234);
+        sancion.setIdEvento(1);
+        sancion.setIdUsuarioAdmin("1234");
+        sancion.setMotivo("Hey");
+
+        sancion.actualizar();
 
         System.out.println();
 

@@ -24,6 +24,7 @@ import org.darkrpa.discord.bots.june.model.EnvOption;
  * @version 1.0
  */
 public class MySQLController {
+    public static final int AUTO_INCREMENT = -1;
     //Debemos de tener en cuenta
     //No necesitamos almacenar por ningun lado la instancia del bot pues no la vamos a utilizar
 
@@ -74,14 +75,29 @@ public class MySQLController {
     //Este metodo de lo que se va a encargar será de ejecutar cualquier sentencia que no sea una consulta
     //y devolvera la cantidad de filas afectadas
     public int execute(String sentencia){
+        Statement estado;
         try {
-            Statement estado = this.conexion.createStatement();
+            estado = this.conexion.createStatement();
             return estado.executeUpdate(sentencia);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return 0;
 
+    }
+
+    public ResultSet executeGetKeys(String sentencia){
+        try {
+            Statement estado = this.conexion.createStatement();
+
+            estado.executeUpdate(sentencia, Statement.RETURN_GENERATED_KEYS);
+            return estado.getGeneratedKeys();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //Siempre que vayamos a hacer alguna operacion crearemos un nuevo statement, asi nos quitamos de complicaciones

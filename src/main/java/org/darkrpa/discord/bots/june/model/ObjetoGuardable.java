@@ -2,6 +2,7 @@ package org.darkrpa.discord.bots.june.model;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,10 @@ public class ObjetoGuardable {
                     for(int i = 0; i < primarias.size(); i++){
                         HashMap<String, Object> valor = primarias.get(i);
 
+                        if((valor.get("valor") instanceof Integer && (int)valor.get("valor") == -1)){
+                            return false;
+                        }
+
                         query += valor.get("nombreColumna")+" = '"+valor.get("valor")+"'";
 
                         if(!(i + 1 >= primarias.size())){
@@ -99,11 +104,14 @@ public class ObjetoGuardable {
             try {
                 String nombreTabla = this.getNombreTabla();
                 ArrayList<HashMap<String, Object>> valoresGet = this.getValores();
+                Method[] metodos = claseActual.getMethods();
 
                 //Tenemos todos los valores bien obtenidos :) Ahora podemos proseguir con el conseguir los datos, en base a las claves primarias
                 //que hemos obtenido vamos a hacer un get a la tabla
 
                 long contarPrimarias = valoresGet.stream().filter(e -> (boolean)e.get("isPrimary")).count();
+
+                boolean autogeneradas = false;
 
                 String query = "";
                 if(contarPrimarias > 0){
@@ -115,7 +123,10 @@ public class ObjetoGuardable {
 
                         for(int i = 0; i < valoresGet.size(); i++){
                             HashMap<String, Object> valoresFinales = valoresGet.get(i);
-                            Object valor = valoresFinales.get("valor")==null?"null":"'"+valoresFinales.get("valor")+"'";
+                            Object valor = (valoresFinales.get("valor")==null || (valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1))?"null":"'"+valoresFinales.get("valor")+"'";
+                            if((valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1)){
+                                autogeneradas = true;
+                            }
                             if(i == 0){
                                 //Es el primero
                                 query += valoresFinales.get("nombreColumna")+" = "+valor;
@@ -140,7 +151,12 @@ public class ObjetoGuardable {
                         String valores = "(";
                         for(int i = 0; i < valoresGet.size(); i++){
                             HashMap<String, Object> valoresFinales = valoresGet.get(i);
-                            Object valor = valoresFinales.get("valor")==null?"null":"'"+valoresFinales.get("valor")+"'";
+                            Object valor = (valoresFinales.get("valor")==null || (valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1))?"null":"'"+valoresFinales.get("valor")+"'";
+
+                            if((valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1)){
+                                autogeneradas = true;
+                            }
+
                             if(i == 0){
                                 //Es el primero
                                 columnas += valoresFinales.get("nombreColumna");
@@ -166,12 +182,41 @@ public class ObjetoGuardable {
 
                 //Tenemos la query de la consulta, podemos proceder
 
-                if(this.controller.execute(query) >= 1){
+                //Debemos de mirar si tiene claves autogeneradas y si las tiene las ponemos
+                if(!autogeneradas){
+                    if(this.controller.execute(query) >= 1){
+                        this.guardado = true;
+                        return true;
+                    }else{
+                        this.guardado = false;
+                        return false;
+                    }
+                }else{
+                    //Es autoGenerada por lo que debemos de obtener la ID y ponerla en su lugar
+                    ResultSet resultado = this.controller.executeGetKeys(query);
+                    while(resultado.next()){
+                        int idGenerada = resultado.getInt(1);
+                        //Como no nos devuelve el nombre de la columna autoIncrementada al menos nos lo devuelve
+                        //en orden así que podemos hacer lo mismo con los metodos
+                        for(int i = 0; i < metodos.length; i++){
+                            Method metodo = metodos[i];
+                            Annotation[] anotaciones = metodo.getAnnotations();
+                            for(int x = 0; x < anotaciones.length; x++){
+                                Annotation anotacion = anotaciones[x];
+                                if(anotacion instanceof CampoSetter){
+                                    Class tipoAnotacion = anotacion.annotationType();
+                                    Method metodoAnotacion = tipoAnotacion.getMethod("isAutoIncremental");
+                                    if((boolean)metodoAnotacion.invoke(anotacion)){
+                                        //Es autoGenerada
+                                        metodo.invoke(this, idGenerada);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     this.guardado = true;
                     return true;
-                }else{
-                    this.guardado = false;
-                    return false;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -213,6 +258,11 @@ public class ObjetoGuardable {
                     query += " WHERE ";
                     for(int i = 0; i < primarias.size(); i++){
                         HashMap<String, Object> valor = primarias.get(i);
+
+                        //Si es -1 significa que es auto incremental y que solo quiere insertar
+                        if(valor.get("valor") instanceof Integer && (int)valor.get("valor") == -1){
+                            return;
+                        }
 
                         query += valor.get("nombreColumna")+" = '"+valor.get("valor")+"'";
 

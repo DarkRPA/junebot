@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface CampoSetter {
     public String nombreColumna();
+    public boolean isAutoIncremental() default false;
 }

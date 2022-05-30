@@ -14,4 +14,5 @@ import java.lang.annotation.Target;
 public @interface CampoGetter {
     public String nombreColumna();
     public boolean isPrimary() default false;
+    public boolean isAutoIncremental() default false;
 }
