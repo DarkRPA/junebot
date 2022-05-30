@@ -14,6 +14,7 @@ import org.darkrpa.discord.bots.june.model.Ticket;
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
+import org.darkrpa.discord.bots.june.thread.BansThreadController;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
 public class Testing {
@@ -27,14 +28,15 @@ public class Testing {
 
         //UserNivel nivel = new UserNivel("1234", "941302117468110879");
 
-        Sancion sancion = new Sancion("123", "1234");
+        Sancion sancion = new Sancion(223, "123", "1234");
 
-        sancion.setFechaEvento(1234);
-        sancion.setIdEvento(1);
-        sancion.setIdUsuarioAdmin("1234");
-        sancion.setMotivo("Hey");
-
+        BansThreadController bansThreadController = new BansThreadController();
+        Instant ahora = Instant.now().plusMillis(20000);
+        sancion.setFechaVencimiento(ahora.toEpochMilli());
         sancion.actualizar();
+
+        bansThreadController.cargarTodasSanciones();
+
 
         System.out.println();
 

@@ -61,7 +61,7 @@ public class ObjetoGuardable {
                     for(int i = 0; i < primarias.size(); i++){
                         HashMap<String, Object> valor = primarias.get(i);
 
-                        if((valor.get("valor") instanceof Integer && (int)valor.get("valor") == -1)){
+                        if((valor.get("valor") instanceof Integer && (int)valor.get("valor") == MySQLController.AUTO_INCREMENT)){
                             return false;
                         }
 
@@ -123,8 +123,8 @@ public class ObjetoGuardable {
 
                         for(int i = 0; i < valoresGet.size(); i++){
                             HashMap<String, Object> valoresFinales = valoresGet.get(i);
-                            Object valor = (valoresFinales.get("valor")==null || (valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1))?"null":"'"+valoresFinales.get("valor")+"'";
-                            if((valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1)){
+                            Object valor = (valoresFinales.get("valor")==null || (valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == MySQLController.AUTO_INCREMENT))?"null":"'"+valoresFinales.get("valor")+"'";
+                            if((valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == MySQLController.AUTO_INCREMENT)){
                                 autogeneradas = true;
                             }
                             if(i == 0){
@@ -151,9 +151,9 @@ public class ObjetoGuardable {
                         String valores = "(";
                         for(int i = 0; i < valoresGet.size(); i++){
                             HashMap<String, Object> valoresFinales = valoresGet.get(i);
-                            Object valor = (valoresFinales.get("valor")==null || (valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1))?"null":"'"+valoresFinales.get("valor")+"'";
+                            Object valor = (valoresFinales.get("valor")==null || (valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == MySQLController.AUTO_INCREMENT))?"null":"'"+valoresFinales.get("valor")+"'";
 
-                            if((valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == -1)){
+                            if((valoresFinales.get("valor") instanceof Integer && (int)valoresFinales.get("valor") == MySQLController.AUTO_INCREMENT)){
                                 autogeneradas = true;
                             }
 
@@ -260,7 +260,7 @@ public class ObjetoGuardable {
                         HashMap<String, Object> valor = primarias.get(i);
 
                         //Si es -1 significa que es auto incremental y que solo quiere insertar
-                        if(valor.get("valor") instanceof Integer && (int)valor.get("valor") == -1){
+                        if(valor.get("valor") instanceof Integer && (int)valor.get("valor") == MySQLController.AUTO_INCREMENT){
                             return;
                         }
 

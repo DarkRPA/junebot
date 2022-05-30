@@ -13,13 +13,15 @@ import javax.security.auth.login.LoginException;
 
 import org.darkrpa.discord.bots.june.controllers.MySQLController;
 import org.darkrpa.discord.bots.june.events.AyudaMenuListener;
+import org.darkrpa.discord.bots.june.events.BotKickedEvent;
 import org.darkrpa.discord.bots.june.events.CommandListener;
 import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
 import org.darkrpa.discord.bots.june.events.LoggingListener;
+import org.darkrpa.discord.bots.june.events.NewTextChannelListener;
 import org.darkrpa.discord.bots.june.events.NivelesListener;
-import org.darkrpa.discord.bots.june.events.TestCommandListener;
 import org.darkrpa.discord.bots.june.exceptions.EnvFileDoesntExistException;
 import org.darkrpa.discord.bots.june.model.EnvOption;
+import org.darkrpa.discord.bots.june.thread.BansThreadController;
 import org.darkrpa.discord.bots.june.thread.TimerVerifier;
 
 import net.dv8tion.jda.api.JDA;
@@ -27,7 +29,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
 /**
  * Hello world!
@@ -48,7 +49,8 @@ public final class Main {
         }
     }
 
-    private JDA bot;
+    private static JDA bot;
+    private static LoggingListener loggingListener;
 
     private Main() throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
         Main.controlador = new MySQLController();
@@ -60,17 +62,25 @@ public final class Main {
         String resultado = String.format("Atendiendo a %s miembros en %s servidores || !ayuda", servidoresMiembros.get("usuarios"), servidoresMiembros.get("servidores"));
         JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor()).enableIntents(GatewayIntent.GUILD_MEMBERS).setActivity(Activity.playing(resultado));
         consBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
-        this.bot = consBuilder.build();
+        Main.bot = consBuilder.build();
         //Esperamos a que el bot cargue correctamente
-        this.bot.awaitReady();
+        Main.bot.awaitReady();
 
-        FirstRunEventListener fRunEventListener = new FirstRunEventListener(this.bot);
+        //El bot se ha iniciado, cargamos todas las sanciones
+
+        BansThreadController controladorBans = new BansThreadController();
+        controladorBans.cargarTodasSanciones();
+
+        FirstRunEventListener fRunEventListener = new FirstRunEventListener(Main.bot);
         //TestCommandListener testCommandListener = new TestCommandListener(this.bot);
-        CommandListener commandListener = new CommandListener(this.bot);
-        AyudaMenuListener ayudaMenuListener = new AyudaMenuListener(this.bot);
-        NivelesListener nivelesListener = new NivelesListener(this.bot);
-        LoggingListener loggingListener = new LoggingListener(this.bot);
-        this.bot.addEventListener(fRunEventListener, commandListener, ayudaMenuListener, nivelesListener, loggingListener);
+        CommandListener commandListener = new CommandListener(Main.bot);
+        AyudaMenuListener ayudaMenuListener = new AyudaMenuListener(Main.bot);
+        NivelesListener nivelesListener = new NivelesListener(Main.bot);
+        LoggingListener loggingListener = new LoggingListener(Main.bot);
+        NewTextChannelListener newTextChannelListener = new NewTextChannelListener(Main.bot);
+        BotKickedEvent botKickedEvent = new BotKickedEvent(Main.bot);
+        Main.loggingListener = loggingListener;
+        Main.bot.addEventListener(fRunEventListener, commandListener, ayudaMenuListener, nivelesListener, loggingListener, newTextChannelListener, botKickedEvent);
 
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase
@@ -79,12 +89,12 @@ public final class Main {
     }
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
-        Main main = new Main();
+        new Main();
     }
 
-    public JDA getBot(){
+    public static JDA getBot(){
         //Nos puede interesar compartir el bot
-        return this.bot;
+        return Main.bot;
     }
 
     //Debemos de hacer un metodo que se encargue de leer el archivo .env en el que tenemos
@@ -143,5 +153,9 @@ public final class Main {
 
     public static TimerVerifier getTimerVerifier(){
         return Main.timer;
+    }
+
+    public static LoggingListener getLoggingListener(){
+        return Main.loggingListener;
     }
 }
