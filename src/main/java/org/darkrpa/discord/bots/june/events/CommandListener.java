@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.comandos.Comando;
+import org.darkrpa.discord.bots.june.comandos.moderacion.Kick;
 import org.darkrpa.discord.bots.june.comandos.nivel.Nivel;
 import org.darkrpa.discord.bots.june.comandos.ticket.AbrirTicket;
 import org.darkrpa.discord.bots.june.comandos.ticket.AddMemberTicket;
@@ -31,7 +32,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  * y se ejecutará su metodo ejecutar()
  */
 public class CommandListener extends AbstractEventListener {
-    public static String COMMAND_REGEX = "^!([a-zA-Z]*)(( <[!@&a-zA-Z0-9]*>)+( \\d+[mdsMA]{1})?( [a-zA-Z0-9¿?¡!*+-\\/ñáóéíú():;,.\\[\\]<> ]*)?)?([a-zA-Z¿?¡!*+-\\/ñáóéíú0-9():;,.\\[\\]<> ]*)";
+    public static String COMMAND_REGEX = "^!([a-zA-Z]*)(( *<[!@&a-zA-Z0-9]*>)+( \\d+[mdsMA]{1})?( [a-zA-Z0-9¿?¡!*+-\\/ñáóéíú():;,.\\[\\]<> ]*)?)?([a-zA-Z¿?¡!*+-\\/ñáóéíú0-9():;,.\\[\\]<> ]*)";
     private final HashMap<String, Class> COMMAND_CLASS_MAP = new HashMap<>();
 
 
@@ -42,6 +43,7 @@ public class CommandListener extends AbstractEventListener {
         this.COMMAND_CLASS_MAP.put("cerrarTicket", CerrarTicket.class);
         this.COMMAND_CLASS_MAP.put("addmemberticket", AddMemberTicket.class);
         this.COMMAND_CLASS_MAP.put("kickuserticket", KickUserTicket.class);
+        this.COMMAND_CLASS_MAP.put("kick", Kick.class);
     }
 
     public CommandListener(JDA bot) {

@@ -16,6 +16,8 @@ import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
  * las cargue en cada reinicio de la aplicacion, para así no haber fallas de que ha dejado acceder a alguien
  */
 public class BansThreadController {
+    public static final String MINUTOS = "m", DIAS = "d", SEMANAS = "s", MESES = "M", ANIOS = "A";
+
     private ArrayList<Timer> tareas = new ArrayList<>();
     private MySQLController controlador;
 

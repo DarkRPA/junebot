@@ -51,6 +51,7 @@ public final class Main {
 
     private static JDA bot;
     private static LoggingListener loggingListener;
+    private static BansThreadController controladorBans;
 
     private Main() throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
         Main.controlador = new MySQLController();
@@ -69,7 +70,8 @@ public final class Main {
         //El bot se ha iniciado, cargamos todas las sanciones
 
         BansThreadController controladorBans = new BansThreadController();
-        controladorBans.cargarTodasSanciones();
+        Main.controladorBans = controladorBans;
+        Main.controladorBans.cargarTodasSanciones();
 
         FirstRunEventListener fRunEventListener = new FirstRunEventListener(Main.bot);
         //TestCommandListener testCommandListener = new TestCommandListener(this.bot);
@@ -157,5 +159,9 @@ public final class Main {
 
     public static LoggingListener getLoggingListener(){
         return Main.loggingListener;
+    }
+
+    public static BansThreadController getControladorBans(){
+        return Main.controladorBans;
     }
 }
