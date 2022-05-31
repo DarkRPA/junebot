@@ -65,8 +65,8 @@ public class Mute extends Comando{
                     return;
                 }
 
-                String duracion = this.matcher.group(4);
-                String motivo = this.matcher.group(5);
+                String duracion = this.matcher.group(4).trim();
+                String motivo = this.matcher.group(5).trim();
 
                 Pattern patronDuracion = Pattern.compile("(\\d+)([mdsMA])");
                 Matcher matcherDuracion = patronDuracion.matcher(duracion);
@@ -88,27 +88,27 @@ public class Mute extends Comando{
                 switch (controladorTiempo) {
                     case BansThreadController.MINUTOS:
                         Duration durationMinutos = Duration.ofMinutes(Integer.parseInt(parteDecimal));
-                        instanteFuturo.plus(durationMinutos);
+                        instanteFuturo = instanteFuturo.plus(durationMinutos);
                         embellecedor = "minutos";
                         break;
                     case BansThreadController.DIAS:
                         Duration durationDias = Duration.ofDays(Integer.parseInt(parteDecimal));
-                        instanteFuturo.plus(durationDias);
+                        instanteFuturo = instanteFuturo.plus(durationDias);
                         embellecedor = "dias";
                         break;
                     case BansThreadController.SEMANAS:
                         Duration durationSemanas = Duration.ofDays(Integer.parseInt(parteDecimal)*7);
-                        instanteFuturo.plus(durationSemanas);
+                        instanteFuturo = instanteFuturo.plus(durationSemanas);
                         embellecedor = "semanas";
                         break;
                     case BansThreadController.MESES:
                         Duration durationMeses = Duration.ofDays(Integer.parseInt(parteDecimal)*31);
-                        instanteFuturo.plus(durationMeses);
+                        instanteFuturo = instanteFuturo.plus(durationMeses);
                         embellecedor = "meses";
                         break;
                     case BansThreadController.ANIOS:
                         Duration durationAnios = Duration.ofDays(Integer.parseInt(parteDecimal)*365);
-                        instanteFuturo.plus(durationAnios);
+                        instanteFuturo = instanteFuturo.plus(durationAnios);
                         embellecedor = "años";
                         break;
                     default:
