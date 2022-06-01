@@ -4,11 +4,9 @@ import java.time.Instant;
 import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.Main;
-import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.logging.discord.events.kick.KickEvent;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
-import org.slf4j.event.LoggingEvent;
 
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,7 +14,7 @@ import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 
-public class Kick extends Comando{
+public class Kick extends GenericModerationCommand{
 
     public Kick(String nombre, Matcher matcher) {
         super(nombre, matcher);

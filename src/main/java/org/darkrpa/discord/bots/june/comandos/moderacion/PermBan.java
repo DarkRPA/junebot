@@ -1,32 +1,27 @@
 package org.darkrpa.discord.bots.june.comandos.moderacion;
 
-import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.Main;
-import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.ban.BanEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.ban.PermBanEvent;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
-import org.darkrpa.discord.bots.june.thread.BansThreadController;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-/**
- * Comando encargado de poder mutear a un usuario en especifico
- */
-public class Mute extends GenericModerationCommand{
+public class PermBan extends GenericModerationCommand{
 
-    public Mute(String nombre, Matcher matcher) {
+    public PermBan(String nombre, Matcher matcher) {
         super(nombre, matcher);
     }
 
@@ -38,7 +33,6 @@ public class Mute extends GenericModerationCommand{
             if(evento.getChannelType() == ChannelType.TEXT){
                 Guild guild = evento.getGuild();
                 Servidor server = new Servidor(guild.getId());
-                Role rolMute = guild.getRoleById(server.getRolMute());
                 Message mensaje = evento.getMessage();
                 //Vamos a permitir la expulsion masiva
                 List<Member> miembrosMencionados = mensaje.getMentionedMembers();
@@ -47,13 +41,7 @@ public class Mute extends GenericModerationCommand{
 
                 if(miembrosMencionados.isEmpty()){
                     //Es vacio
-                    creator.description("No se han mencionado miembros para silenciar");
-                    mensaje.replyEmbeds(creator.build()).queue();
-                    return;
-                }
-
-                if(this.matcher.group(4) == null){
-                    creator.description("No se ha especificado la duración");
+                    creator.description("No se han mencionado miembros para banear");
                     mensaje.replyEmbeds(creator.build()).queue();
                     return;
                 }
@@ -64,7 +52,7 @@ public class Mute extends GenericModerationCommand{
                     return;
                 }
 
-                String duracion = this.matcher.group(4).trim();
+                String duracion = "50A";
                 String motivo = this.matcher.group(5).trim();
 
                 Pattern patronDuracion = Pattern.compile("(\\d+)([mdsMA])");
@@ -83,7 +71,6 @@ public class Mute extends GenericModerationCommand{
 
                 Instant instanteActual = Instant.now();
                 Instant instanteFuturo = this.getFinalDuration(parteDecimal, controladorTiempo);
-                String embellecedor = this.getEmbellecedorTemporal(controladorTiempo);
 
 
                 for(Member miembro : miembrosMencionados){
@@ -93,20 +80,20 @@ public class Mute extends GenericModerationCommand{
                     sancion.setMotivo(motivo);
                     sancion.setFechaEvento(instanteActual.toEpochMilli());
                     sancion.setFechaVencimiento(instanteFuturo.toEpochMilli());
-                    sancion.setIdEvento(Sancion.MUTE);
+                    sancion.setIdEvento(Sancion.PERM_BAN);
 
                     sancion.actualizar();
 
-                    guild.addRoleToMember(miembro, rolMute).queue(e->{
-                        MuteEvent eventoMute = new MuteEvent(Main.getBot(), 200, guild, mensaje.getAuthor().getId(), miembro.getId(), motivo);
+                    miembro.kick().queue(e->{
+                        PermBanEvent eventoBan = new PermBanEvent(Main.getBot(), 200, guild, mensaje.getAuthor().getId(), miembro.getId(), motivo);
                         Main.getControladorBans().addSancion(sancion);
-                        Main.getLoggingListener().onEvent(eventoMute);
+                        Main.getLoggingListener().onEvent(eventoBan);
                     });
                 }
 
 
 
-                creator.description(String.format("Se han silenciado %d miembros por %s %s", miembrosMencionados.size(), parteDecimal, embellecedor));
+                creator.description(String.format("Se han perma-baneado %d miembros", miembrosMencionados.size()));
                 mensaje.replyEmbeds(creator.build()).queue();
             }
         }

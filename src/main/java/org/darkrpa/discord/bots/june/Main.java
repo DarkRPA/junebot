@@ -16,6 +16,7 @@ import org.darkrpa.discord.bots.june.events.AyudaMenuListener;
 import org.darkrpa.discord.bots.june.events.BotKickedEvent;
 import org.darkrpa.discord.bots.june.events.CommandListener;
 import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
+import org.darkrpa.discord.bots.june.events.FirstTimeUserSaveListener;
 import org.darkrpa.discord.bots.june.events.LoggingListener;
 import org.darkrpa.discord.bots.june.events.NewTextChannelListener;
 import org.darkrpa.discord.bots.june.events.NivelesListener;
@@ -79,10 +80,11 @@ public final class Main {
         AyudaMenuListener ayudaMenuListener = new AyudaMenuListener(Main.bot);
         NivelesListener nivelesListener = new NivelesListener(Main.bot);
         LoggingListener loggingListener = new LoggingListener(Main.bot);
+        FirstTimeUserSaveListener primeraVezUsuario = new FirstTimeUserSaveListener(Main.bot);
         NewTextChannelListener newTextChannelListener = new NewTextChannelListener(Main.bot);
         BotKickedEvent botKickedEvent = new BotKickedEvent(Main.bot);
         Main.loggingListener = loggingListener;
-        Main.bot.addEventListener(fRunEventListener, commandListener, ayudaMenuListener, nivelesListener, loggingListener, newTextChannelListener, botKickedEvent);
+        Main.bot.addEventListener(fRunEventListener, primeraVezUsuario, commandListener, ayudaMenuListener, nivelesListener, loggingListener, newTextChannelListener, botKickedEvent);
 
         //Creamos el controlador y lo asignamos como estatico para que cualquier clase pueda hacer
         //uso de el sin necesidad de tener una instancia de la clase

@@ -8,8 +8,10 @@ import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.comandos.Ayuda;
 import org.darkrpa.discord.bots.june.comandos.Comando;
+import org.darkrpa.discord.bots.june.comandos.moderacion.Ban;
 import org.darkrpa.discord.bots.june.comandos.moderacion.Kick;
 import org.darkrpa.discord.bots.june.comandos.moderacion.Mute;
+import org.darkrpa.discord.bots.june.comandos.moderacion.PermBan;
 import org.darkrpa.discord.bots.june.comandos.nivel.Nivel;
 import org.darkrpa.discord.bots.june.comandos.ticket.AbrirTicket;
 import org.darkrpa.discord.bots.june.comandos.ticket.AddMemberTicket;
@@ -46,6 +48,8 @@ public class CommandListener extends AbstractEventListener {
         this.COMMAND_CLASS_MAP.put("kickuserticket", KickUserTicket.class);
         this.COMMAND_CLASS_MAP.put("kick", Kick.class);
         this.COMMAND_CLASS_MAP.put("mute", Mute.class);
+        this.COMMAND_CLASS_MAP.put("ban", Ban.class);
+        this.COMMAND_CLASS_MAP.put("permban", PermBan.class);
     }
 
     public CommandListener(JDA bot) {

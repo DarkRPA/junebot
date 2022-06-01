@@ -1,8 +1,15 @@
 package org.darkrpa.discord.bots.june.events;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.Usuario;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 
@@ -20,8 +27,21 @@ public class FirstTimeUserSaveListener extends AbstractEventListener{
     @Override
     public void onEvent(GenericEvent event) {
         if(event instanceof GuildMemberJoinEvent){
+            //Vamos a comprobar tambien si el usuario esta baneado y si lo está lo expulsamos hasta que se acabe su ban
             //Un usuario ha entrado
             GuildMemberJoinEvent eventoReal = (GuildMemberJoinEvent)event;
+
+            Instant momentoActual = Instant.now();
+            Guild guild = eventoReal.getGuild();
+            Member miembro = eventoReal.getMember();
+            ArrayList<HashMap<String, Object>> sancionesUsuario = Main.getMySQLController().get(String.format("SELECT * FROM bans WHERE idUsuarioSancionado = '%s' AND idEvento = '4' AND idServidor = '%s' AND fechaVencimiento >= '%d'", miembro.getId(), guild.getId(), momentoActual.toEpochMilli()));
+
+            if(sancionesUsuario.size() != 0){
+                //Hay registros validos por lo que esta baneado y no hay más que hablar
+                miembro.kick("Estas baneado de "+guild.getName()).queue();
+                return;
+            }
+
             Usuario usuario = new Usuario(eventoReal.getUser().getId());
             usuario.setNombreUsuario(eventoReal.getUser().getName());
             usuario.actualizar();
