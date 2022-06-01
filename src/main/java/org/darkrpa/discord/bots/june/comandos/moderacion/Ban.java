@@ -93,7 +93,7 @@ public class Ban extends GenericModerationCommand{
                     sancion.actualizar();
 
                     miembro.kick().queue(e->{
-                        BanEvent eventoBan = new BanEvent(Main.getBot(), 200, guild, mensaje.getAuthor().getId(), miembro.getId(), motivo);
+                        BanEvent eventoBan = new BanEvent(Main.getBot(), 200, guild, mensaje.getAuthor().getId(), miembro.getId(), motivo, instanteFuturo.toEpochMilli());
                         Main.getControladorBans().addSancion(sancion);
                         Main.getLoggingListener().onEvent(eventoBan);
                     });

@@ -7,8 +7,14 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public class MuteEvent extends GenericGuildDiscordEvent{
 
-    public MuteEvent(JDA api, long responseNumber, Guild guild, String admin, String usuarioAfectado, String motivo) {
+    private long tiempo;
+
+    public MuteEvent(JDA api, long responseNumber, Guild guild, String admin, String usuarioAfectado, String motivo, long tiempo) {
         super(api, responseNumber, guild, admin, usuarioAfectado, motivo);
+        this.tiempo = tiempo;
     }
 
+    public long getTiempo() {
+        return tiempo;
+    }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.Main;
+import org.darkrpa.discord.bots.june.logging.discord.events.warn.WarnEvent;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
@@ -73,6 +74,9 @@ public class Warn extends GenericModerationCommand{
 
 
                 sancion.actualizar();
+
+                WarnEvent eventoWarn = new WarnEvent(Main.getBot(), 200, server, admin.getId(), miembro.getId(), motivo);
+                Main.getLoggingListener().onEvent(eventoWarn);
 
 
                 creator.addField("Otras advertencias", textoOtrasAdvertencias);

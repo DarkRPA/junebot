@@ -98,7 +98,7 @@ public class Mute extends GenericModerationCommand{
                     sancion.actualizar();
 
                     guild.addRoleToMember(miembro, rolMute).queue(e->{
-                        MuteEvent eventoMute = new MuteEvent(Main.getBot(), 200, guild, mensaje.getAuthor().getId(), miembro.getId(), motivo);
+                        MuteEvent eventoMute = new MuteEvent(Main.getBot(), 200, guild, mensaje.getAuthor().getId(), miembro.getId(), motivo, instanteFuturo.toEpochMilli());
                         Main.getControladorBans().addSancion(sancion);
                         Main.getLoggingListener().onEvent(eventoMute);
                     });

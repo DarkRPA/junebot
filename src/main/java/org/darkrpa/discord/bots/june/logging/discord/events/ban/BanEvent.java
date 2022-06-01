@@ -7,8 +7,15 @@ import net.dv8tion.jda.api.entities.Guild;
 
 public class BanEvent extends GenericGuildDiscordEvent{
 
-    public BanEvent(JDA api, long responseNumber, Guild guild, String admin, String usuarioAfectado, String motivo) {
+    private long tiempo;
+
+    public BanEvent(JDA api, long responseNumber, Guild guild, String admin, String usuarioAfectado, String motivo, long tiempo) {
         super(api, responseNumber, guild, admin, usuarioAfectado, motivo);
+        this.tiempo = tiempo;
+    }
+
+    public long getTiempo(){
+        return this.tiempo;
     }
 
 }

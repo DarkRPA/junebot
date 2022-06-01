@@ -7,10 +7,24 @@ import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberAvatarChanged
 import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberNameChanged;
 import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberRoleAdded;
 import org.darkrpa.discord.bots.june.logging.clases.miembros.MemberRoleRemoved;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingBanEvent;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingKickEvent;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingMutedEvent;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingPermBanEvent;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingUnBanEvent;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingUnMuteEvent;
+import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingWarnEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleCreatedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleDeletedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleNameChangedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RolePermissionUpdateEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.ban.BanEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.ban.PermBanEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.ban.UnBanEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.kick.KickEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.mute.UnmuteEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.warn.WarnEvent;
 import org.darkrpa.discord.bots.june.model.Logging;
 
 import net.dv8tion.jda.api.JDA;
@@ -55,17 +69,19 @@ public class LoggingListener extends AbstractEventListener{
         },{
             new GuildBannerChangeEvent(GuildUpdateBannerEvent.class)
         },{
-
+            new LoggingKickEvent(KickEvent.class)
+        },{
+            new LoggingWarnEvent(WarnEvent.class)
+        },{
+            new LoggingMutedEvent(MuteEvent.class),
+            new LoggingUnMuteEvent(UnmuteEvent.class)
+        },{
+            new LoggingBanEvent(BanEvent.class),
+            new LoggingUnBanEvent(UnBanEvent.class),
         },{
 
         },{
-
-        },{
-
-        },{
-
-        },{
-
+            new LoggingPermBanEvent(PermBanEvent.class),
         },{
 
         },{

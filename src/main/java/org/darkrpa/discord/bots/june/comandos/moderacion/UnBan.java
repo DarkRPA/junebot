@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.Main;
+import org.darkrpa.discord.bots.june.logging.discord.events.ban.UnBanEvent;
 import org.darkrpa.discord.bots.june.model.sanciones.LightSancion;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
 import org.darkrpa.discord.bots.june.thread.BansThreadController;
@@ -83,6 +84,9 @@ public class UnBan extends GenericModerationCommand{
 
                     bansThreadController.eliminarTarea(sancionLigeraBanComun);
                     bansThreadController.eliminarTarea(sancionLigeraPermBan);
+
+                    UnBanEvent eventoUnBan = new UnBanEvent(Main.getBot(), 200, server, mensaje.getAuthor().getId(), finalDesbanear, "");
+                    Main.getLoggingListener().onEvent(eventoUnBan);
                 }else{
                     creator.description("¡No se ha podido desbanear al usuario, es posible que no este baneado!");
                     mensaje.replyEmbeds(creator.build()).queue();
