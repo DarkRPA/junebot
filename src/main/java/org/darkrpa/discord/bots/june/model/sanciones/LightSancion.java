@@ -59,4 +59,17 @@ public class LightSancion {
     public void setIdUsuario(long idUsuario) {
         this.idUsuario = idUsuario;
     }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || !(obj instanceof LightSancion)){
+            return false;
+        }
+        LightSancion sancion = (LightSancion)obj;
+        if(sancion.getTipo() == this.tipo && sancion.getIdServer() == this.idServer && sancion.getIdUsuario() == this.idUsuario){
+            return true;
+        }
+        return false;
+    }
 }

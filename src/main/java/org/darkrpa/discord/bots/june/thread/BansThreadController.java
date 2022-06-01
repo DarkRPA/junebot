@@ -3,6 +3,7 @@ package org.darkrpa.discord.bots.june.thread;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,7 +19,7 @@ import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
 public class BansThreadController {
     public static final String MINUTOS = "m", DIAS = "d", SEMANAS = "s", MESES = "M", ANIOS = "A";
 
-    private ArrayList<Timer> tareas = new ArrayList<>();
+    private ArrayList<HashMap<LightSancion, Timer>> tareas = new ArrayList<>();
     private MySQLController controlador;
 
     public BansThreadController(){
@@ -45,11 +46,26 @@ public class BansThreadController {
                 Sancion sancionFinal = new Sancion(sancion.getIdSancion(), String.valueOf(sancion.getIdServer()), String.valueOf(sancion.getIdUsuario()));
                 sancionFinal.revocar();
                 timer.cancel();
-                tareas.remove(timer);
+                eliminarTarea(sancion);
             }
 
         }, diferenciaMilis);
-        tareas.add(timer);
+        HashMap<LightSancion, Timer> mapa = new HashMap<>();
+        mapa.put(sancion, timer);
+        tareas.add(mapa);
+    }
+
+    public void eliminarTarea(LightSancion sancion){
+        Iterator<HashMap<LightSancion, Timer>> iterador = this.tareas.iterator();
+        while(iterador.hasNext()){
+            HashMap<LightSancion, Timer> elementoActual = iterador.next();
+            if(elementoActual.containsKey(sancion)){
+                //Este es uno de los elegidos
+                Timer timer = elementoActual.get(sancion);
+                timer.cancel();
+                iterador.remove();
+            }
+        }
     }
 
     /**

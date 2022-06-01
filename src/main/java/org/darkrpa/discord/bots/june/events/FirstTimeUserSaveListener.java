@@ -34,7 +34,7 @@ public class FirstTimeUserSaveListener extends AbstractEventListener{
             Instant momentoActual = Instant.now();
             Guild guild = eventoReal.getGuild();
             Member miembro = eventoReal.getMember();
-            ArrayList<HashMap<String, Object>> sancionesUsuario = Main.getMySQLController().get(String.format("SELECT * FROM bans WHERE idUsuarioSancionado = '%s' AND idEvento = '4' AND idServidor = '%s' AND fechaVencimiento >= '%d'", miembro.getId(), guild.getId(), momentoActual.toEpochMilli()));
+            ArrayList<HashMap<String, Object>> sancionesUsuario = Main.getMySQLController().get(String.format("SELECT * FROM bans WHERE idUsuarioSancionado = '%s' AND (idEvento = '4' || idEvento = '5') AND idServidor = '%s' AND fechaVencimiento >= '%d'", miembro.getId(), guild.getId(), momentoActual.toEpochMilli()));
 
             if(sancionesUsuario.size() != 0){
                 //Hay registros validos por lo que esta baneado y no hay más que hablar
