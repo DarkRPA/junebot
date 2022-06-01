@@ -12,7 +12,9 @@ import javax.imageio.ImageIO;
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.model.EnvOption;
 import org.darkrpa.discord.bots.june.model.UserNivel;
+import org.darkrpa.discord.bots.june.model.Usuario;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 
 import java.awt.Color;
@@ -20,6 +22,8 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
@@ -119,6 +123,57 @@ public class ImageEditor {
         return this;
     }
 
+    public static ImageEditor generateDefaultWelcomeTemplate(User usuario, Guild server){
+//ImageEditor editor = new ImageEditor(new File("images/levels/PrimeraCapaNivelV2Default.png"));
+        //Debemos de saber si tiene una imagen de nivel establecida, sino le ponemos la imagen común predeterminada
+
+        File imagenElegida = new File("images/BienvenidasV1.png");
+
+        ImageEditor editor = new ImageEditor(imagenElegida);
+
+        try {
+            editor.setDefaultColor();
+            BufferedImage avatarObtenido = ImageIO.read(new URL(usuario.getAvatarUrl()+"?size=256"));
+            //Tenemos el avatar por lo que podemos seguir, aun asi vamos a intentar recortar el avatar para que sea totalmente
+            //redondo y no cuadrado
+
+
+            BufferedImage avatar = new BufferedImage(256, 256, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D graficosAvatar = avatar.createGraphics();
+            graficosAvatar.setClip(new Ellipse2D.Float(0, 0, 256, 256));
+            graficosAvatar.drawImage(avatarObtenido, 0, 0, 256, 256, null);
+
+            editor.drawImage(avatar, 412, 62);
+
+            //Porcentaje
+            Color colorTag = new Color(255, 219, 194);
+
+            Font fontName = new Font("Sans-serif", Font.BOLD, 40);
+
+            String username = usuario.getAsTag();
+            StringTokenizer tokens = new StringTokenizer(username, "#");
+            tokens.nextToken();
+
+
+
+            String textoFinal = "¡Bienvenido "+username+" a "+server.getName()+"!";
+
+
+            editor.setColor(colorTag);
+            editor.setFont(fontName);
+            FontRenderContext contextoRenderizado = new FontRenderContext(new AffineTransform(), true, true);
+
+            double tamanioString = fontName.getStringBounds(textoFinal, contextoRenderizado).getWidth();
+
+            double posicion = (1080-tamanioString)/2;
+
+            editor.addText(textoFinal, (int)Math.ceil(posicion), 450);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return editor;
+    }
 
     public static ImageEditor generateDefaultNivelTemplate(UserNivel userNivel, User usuario){
         //ImageEditor editor = new ImageEditor(new File("images/levels/PrimeraCapaNivelV2Default.png"));

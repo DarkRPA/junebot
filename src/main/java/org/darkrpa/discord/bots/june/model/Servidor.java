@@ -8,6 +8,7 @@ import org.darkrpa.discord.bots.june.anotaciones.Guardable;
 public class Servidor extends ObjetoGuardable{
     private String idServidor;
     private int cantUsuarios;
+    private int bienvenidasHabilitado = 0;
     private String idCanalBienvenida = "";
     private String idCanalTickets = "";
     private int ticketsHabilitado = 0;
@@ -39,6 +40,16 @@ public class Servidor extends ObjetoGuardable{
     public int getEliminarTicketsCerrados() {
         return eliminarTicketsCerrados;
     }
+
+    @CampoGetter(nombreColumna = "bienvenidasHabilitado")
+    public int getBienvenidasHabilitado() {
+        return bienvenidasHabilitado;
+    }
+    @CampoSetter(nombreColumna = "bienvenidasHabilitado")
+    public void setBienvenidasHabilitado(int bienvenidasHabilitado) {
+        this.bienvenidasHabilitado = bienvenidasHabilitado;
+    }
+
     @CampoSetter(nombreColumna = "eliminarTicketsCerrados")
     public void setEliminarTicketsCerrados(int eliminarTicketsCerrados) {
         this.eliminarTicketsCerrados = eliminarTicketsCerrados;

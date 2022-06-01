@@ -5,11 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.darkrpa.discord.bots.june.Main;
+import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.Usuario;
+import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 
@@ -40,6 +44,19 @@ public class FirstTimeUserSaveListener extends AbstractEventListener{
                 //Hay registros validos por lo que esta baneado y no hay más que hablar
                 miembro.kick("Estas baneado de "+guild.getName()).queue();
                 return;
+            }
+
+            //Vamos a enviar la bienvenida
+
+            ImageEditor editor = ImageEditor.generateDefaultWelcomeTemplate(miembro.getUser(), guild);
+            Servidor server = new Servidor(guild.getId());
+
+            if(server.getBienvenidasHabilitado() == 1){
+                //Esta habilitado
+                String canalBienvenidas = server.getIdCanalBienvenida();
+                TextChannel canal = guild.getTextChannelById(canalBienvenidas);
+
+                canal.sendFile(editor.saveImagen()).queue();
             }
 
             Usuario usuario = new Usuario(eventoReal.getUser().getId());
