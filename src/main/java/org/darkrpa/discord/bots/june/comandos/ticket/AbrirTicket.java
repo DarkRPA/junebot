@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.regex.Matcher;
 
+import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Comando;
+import org.darkrpa.discord.bots.june.logging.clases.tickets.OpenTicketEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.tickets.GenericTicketGuildEvent;
 import org.darkrpa.discord.bots.june.model.RolTicket;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.Ticket;
@@ -90,6 +93,10 @@ public class AbrirTicket extends Comando{
                         ticket.setFechaCreacion(actual);
                         ticket.setCausaApertura((razonApertura.isBlank())?"no-especificada":razonApertura);
                         ticket.actualizar();
+
+                        GenericTicketGuildEvent eventoTicket = new GenericTicketGuildEvent(Main.getBot(), 200, guild, "", evento.getMember().getId(), (razonApertura.isBlank())?"No especificada":razonApertura);
+                        eventoTicket.setCanal(e.getAsMention());
+                        Main.getLoggingListener().onEvent(eventoTicket);
                     });
                 }
             }else{

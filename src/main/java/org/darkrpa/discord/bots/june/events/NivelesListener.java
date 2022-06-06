@@ -60,7 +60,7 @@ public class NivelesListener extends AbstractEventListener{
                         EmbedCreator creator = EmbedCreator.generateDefaultTemplate();
                         creator.title("Subida de nivel").description(String.format("¡Felicidades! %s has subido de nivel y ahora eres nivel %d", eventoReal.getAuthor().getAsMention(), nivelActualRedondeado));
                         eventoReal.getMessage().replyEmbeds(creator.build()).queue(e->{
-                            e.reply(ImageEditor.generateDefaultNivelTemplate(nivelUsuario, eventoReal.getAuthor()).saveImagen(), AttachmentOption.SPOILER).queue();
+                            //e.reply(ImageEditor.generateDefaultNivelTemplate(nivelUsuario, eventoReal.getAuthor()).saveImagen(), AttachmentOption.SPOILER).queue();
                         });
                     }
                 }

@@ -18,12 +18,17 @@ import org.darkrpa.discord.bots.june.logging.clases.roles.RoleCreatedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleDeletedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleNameChangedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RolePermissionUpdateEvent;
+import org.darkrpa.discord.bots.june.logging.clases.tickets.CloseTicketEvent;
+import org.darkrpa.discord.bots.june.logging.clases.tickets.OpenTicketEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.ban.BanEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.ban.PermBanEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.ban.UnBanEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.kick.KickEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.UnmuteEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.tickets.CloseTicketDiscordEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.tickets.GenericTicketGuildEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.tickets.OpenTicketDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.warn.WarnEvent;
 import org.darkrpa.discord.bots.june.model.Logging;
 
@@ -89,7 +94,8 @@ public class LoggingListener extends AbstractEventListener{
         },{
 
         },{
-
+            new OpenTicketEvent(OpenTicketDiscordEvent.class),
+            new CloseTicketEvent(CloseTicketDiscordEvent.class)
         },{
             new MemberNameChanged(GuildMemberUpdateNicknameEvent.class)
         },{
