@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -36,6 +39,8 @@ public class MySQLController {
 
     // Conexion de la base de datos
     private Connection conexion;
+    private int intento = 0;
+    private Instant ultimaReconexion;
 
     public MySQLController() throws SQLException {
         String host = Main.getOption(EnvOption.DATABASE_URL).getValor();
@@ -43,8 +48,20 @@ public class MySQLController {
         String user = Main.getOption(EnvOption.DATABASE_USER).getValor();
         String password = Main.getOption(EnvOption.DATABASE_PASSWORD).getValor();
         String db = Main.getOption(EnvOption.DATABASE_MAIN_DATABASE).getValor();
-
-        this.conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + db, user, password);
+        try{
+            this.conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + db, user, password);
+        }catch(Exception e){
+            this.ultimaReconexion = Instant.now();
+            while(!this.reconnect()){
+                this.intento++;
+                try {
+                    Thread.sleep(MySQLController.TIEMPO_ESPERA_INTENTOS*this.intento);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            this.intento = 0;
+        }
     }
 
     public ArrayList<HashMap<String, Object>> get(String sentencia) {
@@ -57,7 +74,7 @@ public class MySQLController {
         // solo necesita la sentencia SQL a ejecutar
 
         ArrayList<HashMap<String, Object>> resultado = new ArrayList<>();
-
+        this.intento++;
         try (Statement estado = this.conexion.createStatement()) {
             ResultSet datosObtenidos = estado.executeQuery(sentencia);
             while (datosObtenidos.next()) {
@@ -73,7 +90,8 @@ public class MySQLController {
                 resultado.add(dato);
             }
             estado.close();
-        } catch (SQLException e) {
+            this.intento = 0;
+        } catch (Exception e) {
             this.reconnect();
             try {
                 Thread.sleep(MySQLController.TIEMPO_ESPERA_INTENTOS);
@@ -92,9 +110,11 @@ public class MySQLController {
     public int execute(String sentencia) {
         Statement estado;
         try {
+            this.intento++;
             estado = this.conexion.createStatement();
+            this.intento = 0;
             return estado.executeUpdate(sentencia);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             this.reconnect();
             try {
                 Thread.sleep(MySQLController.TIEMPO_ESPERA_INTENTOS);
@@ -106,14 +126,26 @@ public class MySQLController {
 
     }
 
+    public boolean isConnected(){
+        try {
+            Statement estado = this.conexion.createStatement();
+            estado.executeQuery("SELECT 'hola mundo'");
+            return true;
+        } catch (Exception e) {
+            //TODO: handle exception
+            return false;
+        }
+    }
+
     public ResultSet executeGetKeys(String sentencia) {
         try {
             Statement estado = this.conexion.createStatement();
-
+            this.intento++;
             estado.executeUpdate(sentencia, Statement.RETURN_GENERATED_KEYS);
+            this.intento = 0;
             return estado.getGeneratedKeys();
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             this.reconnect();
             try {
                 Thread.sleep(MySQLController.TIEMPO_ESPERA_INTENTOS);
@@ -156,17 +188,19 @@ public class MySQLController {
 
             // En principio ya tenemos la sentencia por lo que vamos a hacer la consulta
 
+            this.intento++;
             Statement estado = this.conexion.createStatement();
             ResultSet resultadoConsulta = estado.executeQuery(sentencia);
             resultadoConsulta.next();
             int cantidad = resultadoConsulta.getInt(1);
             estado.close();
+            this.intento = 0;
             if (cantidad <= 0) {
                 return false;
             } else {
                 return true;
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             this.reconnect();
             try {
                 Thread.sleep(MySQLController.TIEMPO_ESPERA_INTENTOS);
@@ -177,8 +211,17 @@ public class MySQLController {
         }
     }
 
-    private void reconnect() {
+    private boolean reconnect() {
         this.conexion = null;
+
+        if(this.intento <= 1){
+            this.ultimaReconexion = Instant.now();
+        }
+
+        Instant instanteActual = Instant.now();
+        Instant tiempoFinal = instanteActual.minusMillis(this.ultimaReconexion.toEpochMilli());
+        LocalDateTime formato = LocalDateTime.ofInstant(tiempoFinal, ZoneId.systemDefault());
+        System.out.println("MySQLController: reconectado... I = "+this.intento+" T = "+formato.getSecond()+" s");
 
         String host = Main.getOption(EnvOption.DATABASE_URL).getValor();
         String port = Main.getOption(EnvOption.DATABASE_PORT).getValor();
@@ -188,9 +231,17 @@ public class MySQLController {
 
         try {
             this.conexion = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + db, user, password);
-        } catch (SQLException e) {
-            //Si aun así aquí da fallo significa que hay un error más grave
-            e.printStackTrace();
+            System.out.println("MySQLController: Conexión re-obtenida en I = "+this.intento+" T = "+formato.getSecond()+" s");
+            return true;
+        } catch (Exception e) {
+            if(this.intento >= 10){
+                //Ha superado los 10 intentos fallidos, vamos a ver que pasa
+                System.out.println("-----LOG------");
+                System.out.println(e.getMessage());
+                System.out.println("--------------");
+            }
+            return false;
+
         }
     }
 }

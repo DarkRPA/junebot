@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.security.auth.login.LoginException;
 
@@ -27,6 +29,7 @@ import org.darkrpa.discord.bots.june.thread.TimerVerifier;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -54,6 +57,7 @@ public final class Main {
     private static LoggingListener loggingListener;
     private static BansThreadController controladorBans;
 
+
     private Main() throws LoginException, IllegalArgumentException, InterruptedException, SQLException {
         Main.controlador = new MySQLController();
 
@@ -61,7 +65,7 @@ public final class Main {
 
         //Cantidad de servidores
         HashMap<String, Object> servidoresMiembros = Main.controlador.get("SELECT COUNT(*) as servidores, SUM(cantUsuarios) as usuarios FROM servidor").get(0);
-        String resultado = String.format("Atendiendo a %s miembros en %s servidores || !ayuda", servidoresMiembros.get("usuarios"), servidoresMiembros.get("servidores"));
+        String resultado = String.format(" a %s miembros en %s servidores || !ayuda", servidoresMiembros.get("usuarios"), servidoresMiembros.get("servidores"));
         JDABuilder consBuilder = JDABuilder.createDefault(Main.getOption(EnvOption.DISCORD_TOKEN).getValor()).enableIntents(GatewayIntent.GUILD_MEMBERS).setActivity(Activity.playing(resultado));
         consBuilder.setMemberCachePolicy(MemberCachePolicy.ALL);
         Main.bot = consBuilder.build();
@@ -73,6 +77,24 @@ public final class Main {
         BansThreadController controladorBans = new BansThreadController();
         Main.controladorBans = controladorBans;
         Main.controladorBans.cargarTodasSanciones();
+
+        Timer timerVerificadorConexion = new Timer();
+        timerVerificadorConexion.scheduleAtFixedRate(new TimerTask() {
+
+            @Override
+            public void run() {
+                if(!Main.controlador.isConnected()){
+                    //No esta conectado
+                    Main.bot.getPresence().setStatus(OnlineStatus.IDLE);
+                    Main.bot.getPresence().setActivity(Activity.watching("Estamos teniendo problemas técnicos, ¡Enseguida regresamos!"));
+                }else{
+                    Main.bot.getPresence().setStatus(OnlineStatus.ONLINE);
+                    Main.bot.getPresence().setActivity(Activity.listening(resultado));
+                }
+            }
+
+        }, 0, 2000);
+
 
         FirstRunEventListener fRunEventListener = new FirstRunEventListener(Main.bot);
         //TestCommandListener testCommandListener = new TestCommandListener(this.bot);

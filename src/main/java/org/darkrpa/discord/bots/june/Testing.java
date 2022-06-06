@@ -30,12 +30,12 @@ public class Testing {
 
         Sancion sancion = new Sancion(223, "123", "1234");
 
-        BansThreadController bansThreadController = new BansThreadController();
-        Instant ahora = Instant.now().plusMillis(20000);
-        sancion.setFechaVencimiento(ahora.toEpochMilli());
-        sancion.actualizar();
 
-        bansThreadController.cargarTodasSanciones();
+        Sancion sancion2 = new Sancion(223, "123", "1234");
+
+        //BansThreadController bansThreadController = new BansThreadController();
+
+        //bansThreadController.cargarTodasSanciones();
 
 
         System.out.println();
