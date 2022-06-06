@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.Main;
+import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
@@ -39,6 +40,13 @@ public class Mute extends GenericModerationCommand{
                 Guild guild = evento.getGuild();
                 Servidor server = new Servidor(guild.getId());
                 Role rolMute = guild.getRoleById(server.getRolMute());
+                if(rolMute == null){
+                    //Creamos el rol
+                    String rolCreado = FirstRunEventListener.crearRolMute(guild);
+                    rolMute = guild.getRoleById(rolCreado);
+                    server.setRolMute(rolCreado);
+                    server.actualizar();
+                }
                 Message mensaje = evento.getMessage();
                 //Vamos a permitir la expulsion masiva
                 List<Member> miembrosMencionados = mensaje.getMentionedMembers();
