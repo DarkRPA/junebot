@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Comando;
-import org.darkrpa.discord.bots.june.logging.discord.events.nivel.AddedExpDiscordEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.nivel.SetExpDiscordEvent;
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
@@ -15,12 +15,9 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-/**
- * Comando encargado de poder dar una cantidad de EXP a un usuario especificado
- */
-public class AddExp extends Comando{
+public class SetExp extends Comando{
 
-    public AddExp(String nombre, Matcher matcher) {
+    public SetExp(String nombre, Matcher matcher) {
         super(nombre, matcher);
     }
 
@@ -52,13 +49,13 @@ public class AddExp extends Comando{
         int cantidadNumerico = Integer.parseInt(cantidad.trim());
         Member miembro = menciones.get(0);
         UserNivel usuarioNivel = new UserNivel(miembro.getId(), server.getId());
-        usuarioNivel.incrementarMensajes(cantidadNumerico);
+        usuarioNivel.setMensajes(cantidadNumerico);
 
         if(usuarioNivel.actualizar()){
-            creator.description(String.format("Se ha dado `%d` exp a %s", cantidadNumerico, miembro.getAsMention()));
+            creator.description(String.format("Se ha establecido la exp de %s a `%d`", miembro.getAsMention(), cantidadNumerico));
             mensaje.replyEmbeds(creator.build()).queue((e)->{
                 //Emitimos el log
-                AddedExpDiscordEvent eventoExp = new AddedExpDiscordEvent(Main.getBot(), 200, server, mensaje.getAuthor().getId(), miembro.getAsMention(), cantidadNumerico);
+                SetExpDiscordEvent eventoExp = new SetExpDiscordEvent(Main.getBot(), 200, server, mensaje.getAuthor().getId(), miembro.getAsMention(), cantidadNumerico);
                 Main.getLoggingListener().onEvent(eventoExp);
             });
         }
@@ -73,4 +70,5 @@ public class AddExp extends Comando{
         }
         return true;
     }
+
 }

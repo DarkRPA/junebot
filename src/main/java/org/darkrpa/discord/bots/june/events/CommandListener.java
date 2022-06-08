@@ -15,7 +15,10 @@ import org.darkrpa.discord.bots.june.comandos.moderacion.PermBan;
 import org.darkrpa.discord.bots.june.comandos.moderacion.UnBan;
 import org.darkrpa.discord.bots.june.comandos.moderacion.UnMute;
 import org.darkrpa.discord.bots.june.comandos.moderacion.Warn;
+import org.darkrpa.discord.bots.june.comandos.nivel.AddExp;
 import org.darkrpa.discord.bots.june.comandos.nivel.Nivel;
+import org.darkrpa.discord.bots.june.comandos.nivel.RemoveExp;
+import org.darkrpa.discord.bots.june.comandos.nivel.SetExp;
 import org.darkrpa.discord.bots.june.comandos.ticket.AbrirTicket;
 import org.darkrpa.discord.bots.june.comandos.ticket.AddMemberTicket;
 import org.darkrpa.discord.bots.june.comandos.ticket.CerrarTicket;
@@ -56,6 +59,9 @@ public class CommandListener extends AbstractEventListener {
         this.COMMAND_CLASS_MAP.put("unmute", UnMute.class);
         this.COMMAND_CLASS_MAP.put("unban", UnBan.class);
         this.COMMAND_CLASS_MAP.put("warn", Warn.class);
+        this.COMMAND_CLASS_MAP.put("addexp", AddExp.class);
+        this.COMMAND_CLASS_MAP.put("removeexp", RemoveExp.class);
+        this.COMMAND_CLASS_MAP.put("setexp", SetExp.class);
     }
 
     public CommandListener(JDA bot) {

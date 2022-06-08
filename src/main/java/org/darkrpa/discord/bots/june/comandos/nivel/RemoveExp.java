@@ -39,7 +39,7 @@ public class RemoveExp extends Comando{
         }
 
         String cantidad = this.matcher.group(5);
-        if(cantidad == null || this.isNumeric(cantidad.trim())){
+        if(cantidad == null || !this.isNumeric(cantidad.trim())){
             creator.description("La cantidad no es válida, recuerde usar solo valores númericos");
             mensaje.replyEmbeds(creator.build()).queue();
             return;
@@ -49,13 +49,20 @@ public class RemoveExp extends Comando{
         int cantidadNumerico = Integer.parseInt(cantidad.trim());
         Member miembro = menciones.get(0);
         UserNivel usuarioNivel = new UserNivel(miembro.getId(), server.getId());
-        usuarioNivel.decrementarMensajes(cantidadNumerico);
+
+        if(usuarioNivel.getNivel() - cantidadNumerico <= 0){
+            usuarioNivel.setMensajes(0);
+        }else{
+            usuarioNivel.decrementarMensajes(cantidadNumerico);
+        }
+
+
 
         if(usuarioNivel.actualizar()){
-            creator.description(String.format("Se ha quitado `%d` puntos de exp a %s", cantidad, miembro.getAsMention()));
+            creator.description(String.format("Se ha quitado `%d` puntos de exp a %s", cantidadNumerico, miembro.getAsMention()));
             mensaje.replyEmbeds(creator.build()).queue((e)->{
                 //Emitimos el log
-                RemovedExpDiscordEvent eventoExp = new RemovedExpDiscordEvent(Main.getBot(), 200, server, mensaje.getAuthor().getAsMention(), miembro.getAsMention(), cantidadNumerico);
+                RemovedExpDiscordEvent eventoExp = new RemovedExpDiscordEvent(Main.getBot(), 200, server, mensaje.getAuthor().getId(), miembro.getAsMention(), cantidadNumerico);
                 Main.getLoggingListener().onEvent(eventoExp);
             });
         }

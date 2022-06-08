@@ -16,6 +16,7 @@ import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingUnMuteEven
 import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingWarnEvent;
 import org.darkrpa.discord.bots.june.logging.clases.nivel.AddedExpEvent;
 import org.darkrpa.discord.bots.june.logging.clases.nivel.RemovedExpEvent;
+import org.darkrpa.discord.bots.june.logging.clases.nivel.SetExpEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleCreatedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleDeletedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleNameChangedEvent;
@@ -30,6 +31,7 @@ import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.UnmuteEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.nivel.AddedExpDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.nivel.RemovedExpDiscordEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.nivel.SetExpDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.tickets.CloseTicketDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.tickets.OpenTicketDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.warn.WarnEvent;
@@ -61,7 +63,7 @@ import net.dv8tion.jda.api.events.role.update.RoleUpdatePermissionsEvent;
  */
 public class LoggingListener extends AbstractEventListener{
 
-    public static final String[] EVENTOS_LOGGING = {"ROL", "ASIG_ROL", "NOMBRE_GUILD", "ICON_CHANGE", "KICK", "WARN", "MUTE", "TEMP_BAN", "SOFT_BAN", "PERM_BAN", "ADD_EXP", "REMOVE_EXP", "SET_WELCOME", "OPEN_TICKET", "USERNAME_CHANGE", "USERNAME_ICON_CHANGE"};
+    public static final String[] EVENTOS_LOGGING = {"ROL", "ASIG_ROL", "NOMBRE_GUILD", "ICON_CHANGE", "KICK", "WARN", "MUTE", "TEMP_BAN", "SOFT_BAN", "PERM_BAN", "ADD_EXP", "REMOVE_EXP", "SET_EXP", "OPEN_TICKET", "USERNAME_CHANGE", "USERNAME_ICON_CHANGE"};
     private static final GenericLoggingEvent[][] CLASES_EVENTOS = {
         {
             new RoleCreatedEvent(RoleCreateEvent.class),
@@ -94,7 +96,7 @@ public class LoggingListener extends AbstractEventListener{
         },{
             new RemovedExpEvent(RemovedExpDiscordEvent.class)
         },{
-
+            new SetExpEvent(SetExpDiscordEvent.class)
         },{
             new OpenTicketEvent(OpenTicketDiscordEvent.class),
             new CloseTicketEvent(CloseTicketDiscordEvent.class)
