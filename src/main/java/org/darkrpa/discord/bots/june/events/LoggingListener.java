@@ -14,6 +14,8 @@ import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingPermBanEve
 import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingUnBanEvent;
 import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingUnMuteEvent;
 import org.darkrpa.discord.bots.june.logging.clases.moderacion.LoggingWarnEvent;
+import org.darkrpa.discord.bots.june.logging.clases.nivel.AddedExpEvent;
+import org.darkrpa.discord.bots.june.logging.clases.nivel.RemovedExpEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleCreatedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleDeletedEvent;
 import org.darkrpa.discord.bots.june.logging.clases.roles.RoleNameChangedEvent;
@@ -26,8 +28,9 @@ import org.darkrpa.discord.bots.june.logging.discord.events.ban.UnBanEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.kick.KickEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.UnmuteEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.nivel.AddedExpDiscordEvent;
+import org.darkrpa.discord.bots.june.logging.discord.events.nivel.RemovedExpDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.tickets.CloseTicketDiscordEvent;
-import org.darkrpa.discord.bots.june.logging.discord.events.tickets.GenericTicketGuildEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.tickets.OpenTicketDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.warn.WarnEvent;
 import org.darkrpa.discord.bots.june.model.Logging;
@@ -35,7 +38,6 @@ import org.darkrpa.discord.bots.june.model.Logging;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
-import net.dv8tion.jda.api.events.Event;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.guild.GenericGuildEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
@@ -88,9 +90,9 @@ public class LoggingListener extends AbstractEventListener{
         },{
             new LoggingPermBanEvent(PermBanEvent.class),
         },{
-
+            new AddedExpEvent(AddedExpDiscordEvent.class)
         },{
-
+            new RemovedExpEvent(RemovedExpDiscordEvent.class)
         },{
 
         },{

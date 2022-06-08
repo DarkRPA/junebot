@@ -26,6 +26,14 @@ public class UserNivel extends ObjetoGuardable{
         this.mensajes++;
     }
 
+    public void incrementarMensajes(int cantidad){
+        this.mensajes += cantidad;
+    }
+
+    public void decrementarMensajes(int cantidad){
+        this.mensajes -= cantidad;
+    }
+
     @CampoGetter(nombreColumna = "idUsuario", isPrimary = true)
     public String getIdUsuario() {
         return idUsuario;
