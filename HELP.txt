@@ -10,9 +10,24 @@
 # cmd:NombreComando:DescripcionComando:ejemploDeUso:<idsDeCategorias>
 
 # Categorias
-ctg:General:Categoria general:0
-ctg:Test Categoria: Categoria de prueba:1
+ctg:Todo:Categoría con todos los comandos disponibles:0
+ctg:Tickets:Categoría de los tickets:1
+ctg:Moderacion: Categoría de moderación:2
+ctg:Niveles: Categoría de los niveles:3
 
 #Comandos
 cmd:ayuda:Muestra la ayuda general:ayuda <comando> para conseguir ayuda sobre un comando en especifico:0
-cmd:comando:Comando de prueba:Esto es un comando de prueba:0:1
+cmd:abrirTicket:Abre un ticket con el cual poder comenzar una conversación directa con los administradores:abrirTicket <motivo> para abrir un ticket:0:1
+cmd:cerrarTicket:Cierra el ticket en el que se use este comando dando un motivo de cierre:cerrarTicket <motivo> para cerrar el ticket actual:0:1
+cmd:addMemberTicket:Añade un usuario al ticket para casos en los que haya la necesidad de tener varias versiones:addMemberTicket <usuario> para invitar a un usuario al ticket actual:0:1
+cmd:nivel:Muestra tu tarjeta de nivel:nivel:0:3
+cmd:addExp:Suma una cantidad X a la experiencia total de un usuario:addExp <usuario> <cantidadNumerica>:0:3
+cmd:removeExp:Resta una cantidad X a la experiencia total de un usuario:removeExp <usuario> <cantidadNumerica>:0:3
+cmd:setExp:Establece una cantidad X como la cantidad total de un usuario:setExp <usuario> <cantidadNumerica>:0:3
+cmd:mute:Silencia a un usuario de todos los canales de texto por un tiempo definido:mute <usuario> <tiempo> <razon>:0:2
+cmd:kick:Expulsa a un usuario del servidor:kick <usuario> <razon>:0:2
+cmd:ban:Banea a un usuario de forma temporal:ban <usuario> <tiempo> <razon>:0:2
+cmd:permBan:Banea de forma permantente a un usuario del servidor:permBan <usuario> <razon>:0:2
+cmd:warn:Lanza un aviso a un usuario:warn <usuario> <razon>:0:2
+cmd:unBan:Desbanea a un usuario especificado. Se debe pasar la ID del usuario:unBan <id_usuario>:0:2
+cmd:unMute:Dessilencia a un usuario que haya estado silenciado con anterioridad:unMute <usuario>:0:2

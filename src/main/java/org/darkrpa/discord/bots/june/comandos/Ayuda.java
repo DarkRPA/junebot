@@ -181,7 +181,7 @@ public class Ayuda extends Comando{
      */
     public static HelpOption buscarComando(String nombre){
         for(HelpOption comando : Ayuda.comandos){
-            if(comando.getNombreComando().equals(nombre.toLowerCase())){
+            if(comando.getNombreComando().toLowerCase().equals(nombre.toLowerCase())){
                 return comando;
             }
         }
