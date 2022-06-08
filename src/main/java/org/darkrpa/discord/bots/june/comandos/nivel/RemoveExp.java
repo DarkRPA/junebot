@@ -50,7 +50,7 @@ public class RemoveExp extends Comando{
         Member miembro = menciones.get(0);
         UserNivel usuarioNivel = new UserNivel(miembro.getId(), server.getId());
 
-        if(usuarioNivel.getNivel() - cantidadNumerico <= 0){
+        if(usuarioNivel.getMensajes() - cantidadNumerico <= 0){
             usuarioNivel.setMensajes(0);
         }else{
             usuarioNivel.decrementarMensajes(cantidadNumerico);
