@@ -51,6 +51,12 @@ public class AbrirTicket extends Comando{
                 if(servidor.getIdCanalTickets() != null && servidor.getIdCanalTickets().equals(canal.getId())){
                     //Lo hemos encontrado, esta en un canal valido
                     Category category = canal.getParentCategory();
+                    if(category == null){
+                        EmbedCreator creator = EmbedCreator.generateDefaultTemplate();
+                        creator.description("¡El canal especificado para abrir tickets no está en ninguna categoría!");
+                        evento.getMessage().replyEmbeds(creator.build()).queue();
+                        return;
+                    }
                     long actual = Instant.now().toEpochMilli();
                     String nombreCanalTicket = "ticket-"+actual;
                     //Vamos a conseguir todos los roles que pueden acceder a este ticket

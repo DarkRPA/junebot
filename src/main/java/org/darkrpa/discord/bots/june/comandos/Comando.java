@@ -107,6 +107,11 @@ public abstract class Comando {
                         //Puede usarlo
                         return true;
                     }
+
+                    if(rolObtenidoBD.equals(servidor.getId())){
+                        //Puede ser ejecutado por todos los usuarios ya que tiene @everyone
+                        return true;
+                    }
                 }
             }
         }
