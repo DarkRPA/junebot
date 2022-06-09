@@ -107,14 +107,19 @@ public abstract class Comando {
                         //Puede usarlo
                         return true;
                     }
-
-                    if(rolObtenidoBD.equals(servidor.getId())){
-                        //Puede ser ejecutado por todos los usuarios ya que tiene @everyone
-                        return true;
-                    }
                 }
             }
         }
+
+        //Si ha llegado aqui ninguno de sus roles es valido, vamos a ver si tiene el rol de everyone
+        String queryEveryone = String.format("SELECT * FROM rolcomandoservidor WHERE `idcomando` = '%s' AND `idRol` = '%s' AND `idServidor` = '%s'", this.nombreComando, servidor.getId(), servidor.getId());
+
+        //Sabemos si tiene el everyone
+        ArrayList<HashMap<String, Object>> listaFilas = controlador.get(queryEveryone);
+        if(!listaFilas.isEmpty()){
+            return true;
+        }
+
 
         return false;
     }
