@@ -20,8 +20,6 @@ import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu.Builder;
 
-//TODO Intentar que los Emojis se vean bien en las opciones
-
 public class AyudaMenuListener extends AbstractEventListener{
 
     public AyudaMenuListener(JDA bot) {

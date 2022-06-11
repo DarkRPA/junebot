@@ -11,7 +11,6 @@ import org.darkrpa.discord.bots.june.events.FirstRunEventListener;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
-import org.darkrpa.discord.bots.june.thread.BansThreadController;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -39,6 +38,11 @@ public class Mute extends GenericModerationCommand{
             if(evento.getChannelType() == ChannelType.TEXT){
                 Guild guild = evento.getGuild();
                 Servidor server = new Servidor(guild.getId());
+                if(server.getRolMute() == null){
+                    String rolCreado = FirstRunEventListener.crearRolMute(guild);
+                    server.setRolMute(rolCreado);
+                    server.actualizar();
+                }
                 Role rolMute = guild.getRoleById(server.getRolMute());
                 if(rolMute == null){
                     //Creamos el rol

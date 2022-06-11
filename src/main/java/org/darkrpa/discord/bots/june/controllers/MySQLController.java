@@ -132,7 +132,6 @@ public class MySQLController {
             estado.executeQuery("SELECT 'hola mundo'");
             return true;
         } catch (Exception e) {
-            //TODO: handle exception
             return false;
         }
     }

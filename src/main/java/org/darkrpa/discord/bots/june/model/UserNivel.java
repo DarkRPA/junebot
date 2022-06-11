@@ -1,12 +1,9 @@
 package org.darkrpa.discord.bots.june.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.darkrpa.discord.bots.june.anotaciones.CampoGetter;
 import org.darkrpa.discord.bots.june.anotaciones.CampoSetter;
 import org.darkrpa.discord.bots.june.anotaciones.Guardable;
-import org.darkrpa.discord.bots.june.exceptions.UnpairedArraysException;
 
 @Guardable(nombreTabla = "niveles")
 public class UserNivel extends ObjetoGuardable{

@@ -1,7 +1,6 @@
 package org.darkrpa.discord.bots.june.events;
 
 import org.darkrpa.discord.bots.june.model.Servidor;
-import org.darkrpa.discord.bots.june.utils.EmbedCreator;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;

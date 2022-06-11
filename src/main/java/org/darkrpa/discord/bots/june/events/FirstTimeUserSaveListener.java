@@ -10,7 +10,6 @@ import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.TextChannel;

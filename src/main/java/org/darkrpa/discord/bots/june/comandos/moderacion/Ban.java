@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.logging.discord.events.ban.BanEvent;
-import org.darkrpa.discord.bots.june.logging.discord.events.mute.MuteEvent;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;

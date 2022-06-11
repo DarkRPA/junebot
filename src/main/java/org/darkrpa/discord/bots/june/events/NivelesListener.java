@@ -3,13 +3,11 @@ package org.darkrpa.discord.bots.june.events;
 import org.darkrpa.discord.bots.june.model.UserNivel;
 import org.darkrpa.discord.bots.june.model.Usuario;
 import org.darkrpa.discord.bots.june.utils.EmbedCreator;
-import org.darkrpa.discord.bots.june.utils.ImageEditor;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.utils.AttachmentOption;
 
 /**
  * Esta clase es la clase encargada de escuchar los mensajes del usuario y de aumentar sus mensajes en el discord

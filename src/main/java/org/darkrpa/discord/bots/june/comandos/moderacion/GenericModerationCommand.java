@@ -7,7 +7,6 @@ import java.util.regex.Matcher;
 import org.darkrpa.discord.bots.june.comandos.Comando;
 import org.darkrpa.discord.bots.june.thread.BansThreadController;
 
-import net.dv8tion.jda.api.events.GenericEvent;
 
 /**
  * Esta clase nos va a servir para poder añadir funcionalidad básica a todos los comandos que sean de administracion como

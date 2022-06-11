@@ -7,8 +7,6 @@ import java.util.regex.Matcher;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.comandos.Comando;
-import org.darkrpa.discord.bots.june.logging.clases.tickets.OpenTicketEvent;
-import org.darkrpa.discord.bots.june.logging.discord.events.tickets.GenericTicketGuildEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.tickets.OpenTicketDiscordEvent;
 import org.darkrpa.discord.bots.june.model.RolTicket;
 import org.darkrpa.discord.bots.june.model.Servidor;
@@ -19,7 +17,6 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Category;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.GenericEvent;

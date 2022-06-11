@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.darkrpa.discord.bots.june.Main;
-import org.darkrpa.discord.bots.june.logging.discord.events.ban.BanEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.ban.PermBanEvent;
 import org.darkrpa.discord.bots.june.model.Servidor;
 import org.darkrpa.discord.bots.june.model.sanciones.Sancion;

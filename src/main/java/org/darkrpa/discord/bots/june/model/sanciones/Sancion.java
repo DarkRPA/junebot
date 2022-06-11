@@ -1,13 +1,11 @@
 package org.darkrpa.discord.bots.june.model.sanciones;
 
-import java.util.List;
 
 import org.darkrpa.discord.bots.june.Main;
 import org.darkrpa.discord.bots.june.anotaciones.CampoGetter;
 import org.darkrpa.discord.bots.june.anotaciones.CampoSetter;
 import org.darkrpa.discord.bots.june.anotaciones.Guardable;
 import org.darkrpa.discord.bots.june.events.LoggingListener;
-import org.darkrpa.discord.bots.june.logging.discord.events.GenericGuildDiscordEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.ban.UnBanEvent;
 import org.darkrpa.discord.bots.june.logging.discord.events.mute.UnmuteEvent;
 import org.darkrpa.discord.bots.june.model.ObjetoGuardable;
