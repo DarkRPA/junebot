@@ -100,6 +100,11 @@ public class Mute extends GenericModerationCommand{
 
                 for(Member miembro : miembrosMencionados){
                     //Tenemos los miembros, vamos a proceder a poner el rol
+                    if(miembro.getUser().isBot()){
+                        //Es un bot por lo que lo saltamos
+                        continue;
+                    }
+
                     Sancion sancion = new Sancion(guild.getId(), miembro.getId());
                     sancion.setIdUsuarioAdmin(mensaje.getAuthor().getId());
                     sancion.setMotivo(motivo);
