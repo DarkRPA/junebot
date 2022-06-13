@@ -127,12 +127,12 @@ public class Sancion extends ObjetoGuardable{
 
                 server.removeRoleFromMember(miembroServer, rolMute).queue(e->{
                     //Vamos a enviar un evento sobre un desmuteo
-                    UnmuteEvent evento = new UnmuteEvent(Main.getBot(), 200, server, Main.getBot().getSelfUser().getAsMention(), miembroServer.getId(), "Tiempo expirado");
+                    UnmuteEvent evento = new UnmuteEvent(Main.getBot(), 200, server, Main.getBot().getSelfUser().getId(), miembroServer.getId(), "Tiempo expirado");
                     listener.onEvent(evento);
                 });
             }else if(this.idEvento == Sancion.BAN){
                 server.unban(this.idUsuarioSancionado).queue(e->{
-                    UnBanEvent evento = new UnBanEvent(Main.getBot(), 200, server, Main.getBot().getSelfUser().getAsMention(), this.idUsuarioSancionado, "Tiempo expirado");
+                    UnBanEvent evento = new UnBanEvent(Main.getBot(), 200, server, Main.getBot().getSelfUser().getId(), this.idUsuarioSancionado, "Tiempo expirado");
                     listener.onEvent(evento);
                 });
             }
