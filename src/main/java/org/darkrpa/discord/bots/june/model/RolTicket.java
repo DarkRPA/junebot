@@ -12,7 +12,7 @@ import org.darkrpa.discord.bots.june.anotaciones.Guardable;
  * Clase encargada de poder tener interpretados a los roles que pueden acceder y modificar tickets
  * dentro del bot. Usualmente solo podrán cerrarlo pues es la unica funcionalidad que tendremos actualmente
  */
-@Guardable(nombreTabla = "rolestickets")
+@Guardable(nombreTabla = "roles_tickets")
 public class RolTicket extends ObjetoGuardable{
     private String idRol;
     private String idServidor;
@@ -44,7 +44,7 @@ public class RolTicket extends ObjetoGuardable{
     public static ArrayList<RolTicket> getRolsEnServer(String idServidor){
         //Vamos a obtener todos los roles que puede tener un servidor en concreto
         //y los vamos a devolver
-        String query = String.format("SELECT idRol FROM rolestickets WHERE idServidor = '%s'", idServidor);
+        String query = String.format("SELECT idRol FROM roles_tickets WHERE idServidor = '%s'", idServidor);
         ArrayList<HashMap<String, Object>> resultado = Main.getMySQLController().get(query);
         ArrayList<RolTicket> roles = new ArrayList<>();
 

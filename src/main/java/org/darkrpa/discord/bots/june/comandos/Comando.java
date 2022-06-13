@@ -52,11 +52,11 @@ public abstract class Comando {
             listaId.add(this.nombreComando);
             listaId.add(servidor.getId());
             try {
-                if(controlador.exist("rolcomandoservidor", listaKey, listaId)){
+                if(controlador.exist("rol_comando_servidor", listaKey, listaId)){
                     //Sabemos que existe
                     listaKey.add("idRol");
                     listaId.add(servidor.getId());
-                    if(controlador.exist("rolcomandoservidor", listaKey, listaId)){
+                    if(controlador.exist("rol_comando_servidor", listaKey, listaId)){
                         //Tiene permiso para ejecutar
                         return true;
                     }else{
@@ -84,7 +84,7 @@ public abstract class Comando {
         }
 
         for(Role rol : rolesUsuario){
-            String query = String.format("SELECT * FROM rolcomandoservidor WHERE `idcomando` = '%s' AND `idRol` = '%s' AND `idServidor` = '%s'", this.nombreComando, rol.getId(), servidor.getIdLong());
+            String query = String.format("SELECT * FROM rol_comando_servidor WHERE `idcomando` = '%s' AND `idRol` = '%s' AND `idServidor` = '%s'", this.nombreComando, rol.getId(), servidor.getIdLong());
             ArrayList<HashMap<String, Object>> listaFilas = controlador.get(query);
             if(listaFilas.size() == 0){
                 //Esta vacio, por lo que no hay comandos programados, verificamos el valor por defecto, si no tiene permiso significa que no puede ejecutarlo
@@ -112,7 +112,7 @@ public abstract class Comando {
         }
 
         //Si ha llegado aqui ninguno de sus roles es valido, vamos a ver si tiene el rol de everyone
-        String queryEveryone = String.format("SELECT * FROM rolcomandoservidor WHERE `idcomando` = '%s' AND `idRol` = '%s' AND `idServidor` = '%s'", this.nombreComando, servidor.getId(), servidor.getId());
+        String queryEveryone = String.format("SELECT * FROM rol_comando_servidor WHERE `idcomando` = '%s' AND `idRol` = '%s' AND `idServidor` = '%s'", this.nombreComando, servidor.getId(), servidor.getId());
 
         //Sabemos si tiene el everyone
         ArrayList<HashMap<String, Object>> listaFilas = controlador.get(queryEveryone);
