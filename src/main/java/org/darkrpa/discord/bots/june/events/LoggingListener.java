@@ -127,6 +127,9 @@ public class LoggingListener extends AbstractEventListener{
             if(logging.getHabilitado() == 1){
                 //Sabemos que esta habilitado el logging
                 String idCanalLogging = logging.getCanalLogin();
+                if(idCanalLogging.equals("DEFAULT")){
+                    return;
+                }
                 MessageChannel canalEncontrado = server.getTextChannelById(idCanalLogging);
                 if(canalEncontrado == null){
                     return;
